@@ -1,0 +1,37 @@
+﻿<UserControl x:Class="MVVMplusDazy.View.GoShoppingControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MVVMplusDazy.View"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="600" Background="White">
+    <Grid>
+        <ListBox BorderBrush="Black" Margin="15,0,0,0" 
+                 Width="175" Height="300" VerticalAlignment="Center" HorizontalAlignment="Left"
+                 SelectionChanged="RaiseProdutcInShopChanged"
+                 ItemsSource="{Binding ProductsInShop, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, 
+            RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
+                 SelectedItem="{Binding SelectedProductInShop, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, 
+            RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"/>
+        <ListBox BorderBrush="Black" Margin="300,0,15,0" 
+                 Width="175" Height="300" VerticalAlignment="Center" HorizontalAlignment="Right"
+                 SelectionChanged="RaiseProdutcToBuyChanged"
+                 ItemsSource="{Binding ProductsToBuy, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, 
+            RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
+                 SelectedItem="{Binding SelectedProductToBuy, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, 
+            RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"/>
+        <Button Content="Dodaj" HorizontalAlignment="Center" Margin="0,150,0,0" Width="100" Height="35" VerticalAlignment="Top"
+                Command="{Binding AddCl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, 
+            RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"/>
+        <Button Content="Info" HorizontalAlignment="Center" Margin="0,200,0,0" Width="100" Height="35" VerticalAlignment="Top"
+                Command="{Binding InfoCl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, 
+            RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"/>
+        <Button Content="Usuń" HorizontalAlignment="Center" Margin="0,250,0,0" Width="100" Height="35" VerticalAlignment="Top"
+                Command="{Binding DelCl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, 
+            RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"/>
+        <Button Content="Kup" HorizontalAlignment="Center" Margin="0,340,0,0" Width="100" Height="35" VerticalAlignment="Top"
+                Command="{Binding BuyCl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, 
+            RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"/>
+    </Grid>
+</UserControl>

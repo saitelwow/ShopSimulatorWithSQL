@@ -1,0 +1,32 @@
+﻿<UserControl x:Class="MVVMplusDazy.View.AddToMagazineControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MVVMplusDazy.View"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="600" Background="White">
+    <Grid>
+        <ListBox BorderBrush="Black" Margin="15,0,0,0" 
+                 Width="175" Height="300" VerticalAlignment="Center" HorizontalAlignment="Left"
+                 SelectionChanged="RaiseShopChanged"
+                 ItemsSource="{Binding Shops, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, 
+            RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
+                 SelectedItem="{Binding SelectedShop, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, 
+            RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"/>
+        <ListBox BorderBrush="Black" Margin="215,0,0,0" 
+                 Width="175" Height="300" VerticalAlignment="Center" HorizontalAlignment="Left"
+                 SelectionChanged="RaiseProductChanged"
+                 ItemsSource="{Binding Products, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, 
+            RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
+                 SelectedItem="{Binding SelectedProduct, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, 
+            RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"/>
+        <Button Content="Uzupełnij" HorizontalAlignment="Center" Margin="390,150,0,0" Width="100" Height="35" VerticalAlignment="Top"
+                Command="{Binding AddCl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, 
+            RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"/>
+        <TextBox HorizontalAlignment="Center" Margin="390,100,0,0" TextWrapping="Wrap" 
+                Text="{Binding QuantityText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, 
+            RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" 
+                 VerticalAlignment="Top" Width="100" Height="35" BorderBrush="Black" FontSize="22.5"/>
+    </Grid>
+</UserControl>
