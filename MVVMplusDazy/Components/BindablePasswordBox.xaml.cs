@@ -18,6 +18,7 @@ namespace MVVMplusDazy.Components
     
     public partial class BindablePasswordBox : UserControl
     {
+        private bool _isPasswordChanging;
         public BindablePasswordBox()
         {
             InitializeComponent();
@@ -46,11 +47,14 @@ namespace MVVMplusDazy.Components
         }
         private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
         {
+            _isPasswordChanging = true;
             Password = passwordBox.Password;
+            _isPasswordChanging = false;
         }
         private void UpdatePassword()
         {
-            passwordBox.Password = Password;
+            if(!_isPasswordChanging)
+                passwordBox.Password = Password;
         }
         #endregion
 
