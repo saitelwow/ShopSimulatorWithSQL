@@ -101,7 +101,7 @@ namespace MVVMplusDazy.ViewModel
             if (Convert.ToInt64(Quantity) <= 0) return;
             if (SelectedProduct == null) return;
 
-
+            //ReloadProducts(true);         //reload listy po uzupelnieniu
             //do smth
         }
         public void ReloadProducts(object sender)
@@ -110,7 +110,7 @@ namespace MVVMplusDazy.ViewModel
             //MessageBox.Show("ReloadProducts");
             ListOfProducts = SelectedShop.ShopProducts;
 
-            SelectedShop = null;
+            //SelectedShop = null;
         }
         #endregion
     }

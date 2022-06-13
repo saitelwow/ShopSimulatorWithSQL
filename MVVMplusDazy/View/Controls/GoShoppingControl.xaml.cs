@@ -38,16 +38,16 @@ namespace MVVMplusDazy.View
             "BuyCl", typeof(ICommand), typeof(GoShoppingControl), new FrameworkPropertyMetadata(null)
             );
         public static readonly DependencyProperty ProductsInShopProperty = DependencyProperty.Register(
-            "ProductsInShop", typeof(ObservableCollection<Product>), typeof(GoShoppingControl), new FrameworkPropertyMetadata(null)
+            "ProductsInShop", typeof(ObservableCollection<string>), typeof(GoShoppingControl), new FrameworkPropertyMetadata(null)
             );
         public static readonly DependencyProperty SelectedProductInShopProperty = DependencyProperty.Register(
-            "SelectedProductInShop", typeof(Product), typeof(GoShoppingControl), new FrameworkPropertyMetadata(null)
+            "SelectedProductInShop", typeof(string), typeof(GoShoppingControl), new FrameworkPropertyMetadata(null)
             );
         public static readonly DependencyProperty ProductsToBuyProperty = DependencyProperty.Register(
-            "ProductsToBuy", typeof(ObservableCollection<Product>), typeof(GoShoppingControl), new FrameworkPropertyMetadata(null)
+            "ProductsToBuy", typeof(ObservableCollection<string>), typeof(GoShoppingControl), new FrameworkPropertyMetadata(null)
             );
         public static readonly DependencyProperty SelectedProductToBuyProperty = DependencyProperty.Register(
-            "SelectedProductToBuy", typeof(Product), typeof(GoShoppingControl), new FrameworkPropertyMetadata(null)
+            "SelectedProductToBuy", typeof(string), typeof(GoShoppingControl), new FrameworkPropertyMetadata(null)
             );
         #endregion
 
@@ -72,24 +72,24 @@ namespace MVVMplusDazy.View
             get { return (ICommand)GetValue(BuyClProperty); }
             set { SetValue(BuyClProperty, value); }
         }
-        public ObservableCollection<Product> ProductsInShop
+        public ObservableCollection<string> ProductsInShop
         {
-            get { return (ObservableCollection<Product>)GetValue(ProductsInShopProperty); }
+            get { return (ObservableCollection<string>)GetValue(ProductsInShopProperty); }
             set { SetValue(ProductsInShopProperty, value); }
         }
-        public Product SelectedProductInShop
+        public string SelectedProductInShop
         {
-            get { return (Product)GetValue(SelectedProductInShopProperty); }
+            get { return (string)GetValue(SelectedProductInShopProperty); }
             set { SetValue(SelectedProductInShopProperty, value); }
         }
-        public ObservableCollection<Product> ProductsToBuy
+        public ObservableCollection<string> ProductsToBuy
         {
-            get { return (ObservableCollection<Product>)GetValue(ProductsToBuyProperty); }
+            get { return (ObservableCollection<string>)GetValue(ProductsToBuyProperty); }
             set { SetValue(ProductsToBuyProperty, value); }
         }       
-        public Product SelectedProductToBuy
+        public string SelectedProductToBuy
         {
-            get { return (Product)GetValue(SelectedProductToBuyProperty); }
+            get { return (string)GetValue(SelectedProductToBuyProperty); }
             set { SetValue(SelectedProductToBuyProperty, value); }
         }
         #endregion

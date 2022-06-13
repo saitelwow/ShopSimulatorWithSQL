@@ -14,7 +14,7 @@ namespace MVVMplusDazy.ViewModel
     class MainVM : BaseVM
     {
         #region Atrybuty
-        private ObservableCollection<Product> _listOfProductsInShop;
+        private ObservableCollection<string> _listOfProductsInShop;
         private ObservableCollection<Product> _buyProducts;
         private ObservableCollection<Shop> _listOfShops;
         private List<User> _listOfUsers;
@@ -22,7 +22,7 @@ namespace MVVMplusDazy.ViewModel
         #endregion
 
         #region GetSet
-        public ObservableCollection<Product> ListOfProductsInShop { get; set; }
+        public ObservableCollection<string> ListOfProductsInShop { get; set; }
         public ObservableCollection<Product> BuyProducts { get; set; }
         public ObservableCollection<Shop> ListOfShops { get; set; }
         public List<User> ListOfUsers { get; set; }
@@ -39,7 +39,7 @@ namespace MVVMplusDazy.ViewModel
 
         public MainVM()
         {
-            ListOfProductsInShop = new ObservableCollection<Product>();
+            ListOfProductsInShop = new ObservableCollection<string>();
             ListOfShops = new ObservableCollection<Shop>();
             ListOfUsers = new List<User>();
             RW = new RegisterWindowVM();
@@ -51,9 +51,13 @@ namespace MVVMplusDazy.ViewModel
             Owner = new User(1, "admin", "admin", "123456789", "admin@admin.pl");
             ListOfUsers.Add(Owner);
             LoadFromDataBase();
-            foreach (Shop sp in ListOfShops)
-                foreach (Product pr in sp.ShopProducts)
-                    ListOfProductsInShop.Add(pr); 
+            foreach (Shop sh in ListOfShops)
+                foreach (Product pr in sh.ShopProducts)
+                {
+                    if(!(ListOfProductsInShop.Contains(pr.Name)))
+                        ListOfProductsInShop.Add(pr.Name);
+                }
+                    
             //do kontrolek, logowanie, rejestracja
             RW.SWVM = SW;
             RW.ListOfUsers = ListOfUsers;
@@ -72,6 +76,7 @@ namespace MVVMplusDazy.ViewModel
             LU.SWVM = SW;
             LU.ListOfProductsInShop = ListOfProductsInShop;
             LU.ListOfUsers = ListOfUsers;
+            LU.ListOfShops = ListOfShops;
             LU.MVM = this;
         }
 
@@ -90,9 +95,9 @@ namespace MVVMplusDazy.ViewModel
             ListOfShops.Add(new Shop(2, "Ul. Ziemna 23", "Owocowo"));
 
             //add products to each shops from tables
-            ListOfShops.ElementAt(0).ShopProducts.Add(new Product(1, 20, 15.5, "Polska", "Ogorek", "Warzywo"));
+            ListOfShops.ElementAt(0).ShopProducts.Add(new Product(1, 0, 15.5, "Polska", "Ogorek", "Warzywo"));
             ListOfShops.ElementAt(0).ShopProducts.Add(new Product(2, 10, 11.5, "Niemcy", "Jablko", "Owoc"));
-            ListOfShops.ElementAt(0).ShopProducts.Add(new Product(3, 14, 12.5, "Hiszpania", "Papryka", "Warzywo"));
+            ListOfShops.ElementAt(0).ShopProducts.Add(new Product(3, 0, 12.5, "Hiszpania", "Papryka", "Warzywo"));
             ListOfShops.ElementAt(0).ShopProducts.Add(new Product(4, 11, 22.5, "Wlochy", "Czeresnie", "Owoc"));
 
             ListOfShops.ElementAt(1).ShopProducts.Add(new Product(5, 11, 15.5, "Polska", "Ogorek", "Warzywo"));

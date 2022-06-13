@@ -17,10 +17,11 @@ namespace MVVMplusDazy.ViewModel
         private string _isVisible = "Hidden";
         private string _login = string.Empty;
         private string _password = string.Empty;
-        private ObservableCollection<Product> _listOfProductsInShop;
-        private ObservableCollection<Product> _listOfProductsToBuy;
-        private Product _selectedProductInShop = null;
-        private Product _selectedProductToBuy = null;
+        private ObservableCollection<string> _listOfProductsInShop;
+        private ObservableCollection<string> _listOfProductsToBuy;
+        private ObservableCollection<Shop> _listOfShops;
+        private string _selectedProductInShop = null;
+        private string _selectedProductToBuy = null;
         #endregion
 
         #region GetSet
@@ -28,22 +29,27 @@ namespace MVVMplusDazy.ViewModel
         public string Login { get { return _login; } set { _login = value; OnPropertyChanged(nameof(Login)); } }
         public string Password { get { return _password; } set { _password = value; OnPropertyChanged(nameof(Password)); } }
         public List<User> ListOfUsers { get; set; }
-        public ObservableCollection<Product> ListOfProductsInShop
+        public ObservableCollection<string> ListOfProductsInShop
         {
             get { return _listOfProductsInShop; }
             set { _listOfProductsInShop = value; OnPropertyChanged(nameof(ListOfProductsInShop)); }
         }
-        public ObservableCollection<Product> ListOfProductsToBuy
+        public ObservableCollection<string> ListOfProductsToBuy
         {
             get { return _listOfProductsToBuy; }
             set { _listOfProductsToBuy = value; OnPropertyChanged(nameof(ListOfProductsToBuy)); }
         }
-        public Product SelectedProductInShop
+        public ObservableCollection<Shop> ListOfShops
+        {
+            get { return _listOfShops; }
+            set { _listOfShops = value; OnPropertyChanged(nameof(ListOfShops)); }
+        }
+        public string SelectedProductInShop
         {
             get { return _selectedProductInShop; }
             set { _selectedProductInShop = value; OnPropertyChanged(nameof(SelectedProductInShop)); }
         }
-        public Product SelectedProductToBuy
+        public string SelectedProductToBuy
         {
             get { return _selectedProductToBuy; }
             set { _selectedProductToBuy = value; OnPropertyChanged(nameof(SelectedProductToBuy)); }
@@ -59,7 +65,7 @@ namespace MVVMplusDazy.ViewModel
 
         public LogUserVM() 
         { 
-            ListOfProductsToBuy = new ObservableCollection<Product>();
+            ListOfProductsToBuy = new ObservableCollection<string>();
         }
 
         #region Metody Kontrolki
@@ -117,11 +123,11 @@ namespace MVVMplusDazy.ViewModel
             if (SelectedProductInShop != null && SelectedProductToBuy != null) SelectedProductToBuy = null;
             if (SelectedProductInShop != null)
             {
-                MessageBox.Show(SelectedProductInShop.GetInfo());
+                //MessageBox.Show(SelectedProductInShop.GetInfo());
             }
             if(SelectedProductToBuy != null)
             {
-                MessageBox.Show(SelectedProductToBuy.GetInfo());
+                //MessageBox.Show(SelectedProductToBuy.GetInfo());
             }
 
             SelectedProductInShop = null; SelectedProductToBuy = null;
@@ -141,15 +147,28 @@ namespace MVVMplusDazy.ViewModel
         public void BuyClick(object sender)
         {
             //MessageBox.Show(ListOfProductsToBuy.Count.ToString());
-            foreach(Product pr in ListOfProductsToBuy.ToList())
+            foreach(string str in ListOfProductsToBuy.ToList())
             {
-                if(pr.Quantity > 0)
-                    pr.Quantity -= 1;
-
-                ListOfProductsInShop.Add(pr);
-                ListOfProductsToBuy.Remove(pr);
+                bool isInFirst = false;
+                foreach(Shop sh in ListOfShops)
+                {
+                    foreach(Product pr in sh.ShopProducts)
+                    {
+                        if(!(pr.Name == str))
+                            continue;    
+                        if (pr.Quantity < 1)
+                            continue;
+                        pr.Quantity -= 1;
+                        isInFirst = true; break;
+                    }
+                    if (isInFirst) break;
+                }
             }
-
+            foreach(string str in ListOfProductsToBuy.ToList())
+            {
+                ListOfProductsInShop.Add(str);
+                ListOfProductsToBuy.Remove(str);
+            }
 
             SelectedProductInShop = null; SelectedProductToBuy = null;
         }
