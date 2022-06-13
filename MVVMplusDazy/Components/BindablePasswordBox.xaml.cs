@@ -22,21 +22,37 @@ namespace MVVMplusDazy.Components
         {
             InitializeComponent();
         }
-
+        #region Wlasnosci
         public static readonly DependencyProperty PasswordProperty =
-            DependencyProperty.Register("Password", typeof(string), typeof(BindablePasswordBox), new PropertyMetadata(string.Empty));
+            DependencyProperty.Register("Password", typeof(string), typeof(BindablePasswordBox),
+                new PropertyMetadata(string.Empty, PasswordPropertyChanged));
+        #endregion
+
+        #region GetSet
         public string Password
         {
             get { return (string)GetValue(PasswordProperty); }
             set { SetValue(PasswordProperty, value); }
         }
-        
+        #endregion
 
-
-
+        #region Metody
+        private static void PasswordPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is BindablePasswordBox passwordBox)
+            {
+                passwordBox.UpdatePassword();
+            }
+        }
         private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
         {
             Password = passwordBox.Password;
         }
+        private void UpdatePassword()
+        {
+            passwordBox.Password = Password;
+        }
+        #endregion
+
     }
 }

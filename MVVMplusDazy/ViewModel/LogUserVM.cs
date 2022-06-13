@@ -71,6 +71,7 @@ namespace MVVMplusDazy.ViewModel
         #region Metody Kontrolki
         public void ClearAll()
         {
+            
             Login = string.Empty; Password = string.Empty;
         }
         public bool CheckInfo()
