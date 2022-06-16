@@ -12,7 +12,7 @@ namespace MVVMplusDazy.Databases.Repozytoria
     {
         #region Zapytania
         private const string WSZYSTKIE_PRODUKTY = "SELECT * FROM produkty";
-        private const string DODAJ_PRODUKT = "INSERT INTO 'produkty'('nazwa', 'rodzaj', 'ilosc', 'kraj', 'cena') VALUES ";
+        private const string DODAJ_PRODUKT = "INSERT INTO 'produkty'('nazwa', 'rodzaj', 'kraj', 'cena') VALUES ";
         #endregion
 
         #region Metody CRUD - create, read, update, delete
@@ -49,22 +49,22 @@ namespace MVVMplusDazy.Databases.Repozytoria
         }
 
         //Update
-        public static bool EdytujProduktWBazie(Product product, string name)
-        {
-            bool stan = false;
-            using (var connection = DBConnection.Instance.Connection)
-            {
-                string EDYTUJ_Produkt = $"UPDATE osoby SET ilosc='{product.Quantity}' WHERE nazwa={name}";
+        //public static bool EdytujProduktWBazie(Product product, string name)
+        //{
+        //    bool stan = false;
+        //    using (var connection = DBConnection.Instance.Connection)
+        //    {
+        //        string EDYTUJ_Produkt = $"UPDATE osoby SET ilosc='{product.Quantity}' WHERE nazwa={name}";
 
-                MySqlCommand command = new MySqlCommand(EDYTUJ_Produkt, connection);
-                connection.Open();
-                var n = command.ExecuteNonQuery();
-                if (n == 1) stan = true;
+        //        MySqlCommand command = new MySqlCommand(EDYTUJ_Produkt, connection);
+        //        connection.Open();
+        //        var n = command.ExecuteNonQuery();
+        //        if (n == 1) stan = true;
 
-                connection.Close();
-            }
-            return stan;
-        }
+        //        connection.Close();
+        //    }
+        //    return stan;
+        //}
 
         //Delete
         public static bool UsunProduktWBazie(Product product, string name)

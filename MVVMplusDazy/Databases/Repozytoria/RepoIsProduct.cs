@@ -14,7 +14,7 @@ namespace MVVMplusDazy.Databases.Repozytoria
 
         //Zapytania
         private const string DODAJ_PRODUKT = "INSERT INTO 'czy_jest_produkt'('id_sklepu', 'id_produktu', 'ilosc') VALUES ";
-        private const string WSZYSTKIE_PRODUKTY = "SELECT * FROM czy_jest_produkt";
+        private const string WSZYSTKIE_PRODUKTYSKLEPU = "SELECT * FROM czy_jest_produkt";
 
 
         #region CRUD
@@ -39,7 +39,23 @@ namespace MVVMplusDazy.Databases.Repozytoria
             List<IsProduct> shopProd = new List<IsProduct>();
             using (var connection = DBConnection.Instance.Connection)
             {
-                MySqlCommand command = new MySqlCommand(WSZYSTKIE_PRODUKTY, connection);
+                MySqlCommand command = new MySqlCommand(WSZYSTKIE_PRODUKTYSKLEPU, connection);
+                connection.Open();
+                var reader = command.ExecuteReader();
+                while (reader.Read())
+                    shopProd.Add(new IsProduct(reader));
+                connection.Close();
+            }
+            return shopProd;
+        }
+
+        public static List<IsProduct> PobierzProduktySklepuZID(int id)
+        {
+            string KONKRET = WSZYSTKIE_PRODUKTYSKLEPU + $" WHERE id_sklepu = {id} ";
+            List<IsProduct> shopProd = new List<IsProduct>();
+            using (var connection = DBConnection.Instance.Connection)
+            {
+                MySqlCommand command = new MySqlCommand(KONKRET, connection);
                 connection.Open();
                 var reader = command.ExecuteReader();
                 while (reader.Read())
@@ -50,12 +66,12 @@ namespace MVVMplusDazy.Databases.Repozytoria
         }
 
         //Update
-        public static bool EdytujProduktWBazie(IsProduct shopProd, int id)
+        public static bool EdytujProduktWBazie(int quantity, int idP, int idS)
         {
             bool stan = false;
             using (var connection = DBConnection.Instance.Connection)
             {
-                string EDYTUJ_Produkt = $"UPDATE czy_jest_produkt SET ilosc='{shopProd.Quantity}' WHERE id_produktu={id}";
+                string EDYTUJ_Produkt = $"UPDATE czy_jest_produkt SET ilosc=ilosc + {quantity} WHERE id_produktu={idP} AND id_sklepu = {idS}";
 
                 MySqlCommand command = new MySqlCommand(EDYTUJ_Produkt, connection);
                 connection.Open();

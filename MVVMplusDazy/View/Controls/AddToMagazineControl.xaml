@@ -23,10 +23,14 @@
             RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"/>
         <Button Content="Uzupełnij" HorizontalAlignment="Center" Margin="390,150,0,0" Width="100" Height="35" VerticalAlignment="Top"
                 Command="{Binding AddCl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, 
-            RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"/>
+            RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
+                IsEnabled="{Binding CanAdd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, 
+            RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
+                />
         <TextBox HorizontalAlignment="Center" Margin="390,100,0,0" TextWrapping="Wrap" 
                 Text="{Binding QuantityText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, 
             RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" 
+                 
                  VerticalAlignment="Top" Width="100" Height="35" BorderBrush="Black" FontSize="22.5"/>
     </Grid>
 </UserControl>

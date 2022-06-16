@@ -23,6 +23,7 @@ namespace MVVMplusDazy.ViewModel
         private ObservableCollection<Product> _listOfProducts;
         private Product _selectedProduct = null;
         private string _quantity;
+        private string _canAdd = "True";
         #endregion
 
         #region GetSet
@@ -30,7 +31,6 @@ namespace MVVMplusDazy.ViewModel
         public string IsVisible { get { return isVisible; } set { isVisible = value; OnPropertyChanged(nameof(IsVisible)); } }
         public string Login { get { return _login; } set { _login = value; OnPropertyChanged(nameof(Login)); } }
         public string Password { get { return _password; } set { _password = value; OnPropertyChanged(nameof(Password)); } }
-        public User USR { get; set; }
         public ObservableCollection<Product> ListOfProducts {
             get { return _listOfProducts; }
             set { _listOfProducts = value; OnPropertyChanged(nameof(ListOfProducts)); }
@@ -48,6 +48,14 @@ namespace MVVMplusDazy.ViewModel
         {
             get { return _selectedShop; }
             set { _selectedShop = value; OnPropertyChanged(nameof(SelectedShop)); }
+        }
+        public User USR { get; set; } = new User();
+        public int ActualShopId { get; set; }
+        public int ActualProductId { get; set; }
+        public string CanAdd
+        {
+            get { return _canAdd; }
+            set { _canAdd = value; OnPropertyChanged(nameof(CanAdd)); }
         }
         #endregion
 
@@ -69,6 +77,7 @@ namespace MVVMplusDazy.ViewModel
         }
         public bool CheckInfo()
         {
+            USR = RepoUser.PobierzKlientaPoID(1);
             if (USR.Login == this.Login && USR.Password == this.Password)
                 return true;
             return false;
@@ -80,6 +89,7 @@ namespace MVVMplusDazy.ViewModel
                 ClearAll();
                 return;
             }
+            Load();
             OW = new OwnerWindow();
             OW.DataContext = this;
             OW.Show();
@@ -94,6 +104,13 @@ namespace MVVMplusDazy.ViewModel
         #endregion
 
         #region Metody Okna
+        public void Load()
+        {
+            ListOfShops = new ObservableCollection<Shop>(RepoShop.PobierzWszystkieSklepy());
+            ListOfProducts = new ObservableCollection<Product>(RepoProduct.PobierzWszystkieProdukty());
+            //ListOfShops = RepoShop.PobierzWszystkieSklepy();
+            //ListOfProducts = new ObservableCollection<Product>(RepoIsProduct.PobierzWszystkieProduktySklepu());
+        }
         public void AddToMagazineClick(object sender)
         {
             if (!(int.TryParse(Quantity, out int value)))
@@ -101,17 +118,32 @@ namespace MVVMplusDazy.ViewModel
                 MessageBox.Show("Wpisz liczbę");
                 return;
             }               
-            if (Convert.ToInt64(Quantity) <= 0) return;
+            if (Convert.ToInt32(Quantity) <= 0) return;
             if (SelectedProduct == null) return;
+            ActualProductId = (int)SelectedProduct.Id;
+            if (RepoIsProduct.EdytujProduktWBazie(Convert.ToInt32(Quantity), ActualProductId, ActualShopId));
+            {
+                MessageBox.Show("Udalo sie");
+            }
 
+            Quantity = string.Empty;
+            CanAdd = "False";
             //ReloadProducts(true);         //reload listy po uzupelnieniu
             //do smth
         }
-        public void ReloadProducts(object sender)
+        public void ChangeShop(object sender)
         {
-            if(SelectedShop == null) return; 
+            if(SelectedShop == null) return;          
+            ActualShopId = SelectedShop.Id;            
+            List<IsProduct> temp = new List<IsProduct>();
+            temp = RepoIsProduct.PobierzProduktySklepuZID(ActualShopId);
+            CanAdd = "True";
+            //MessageBox.Show(temp.ElementAt(1).Quantity.ToString());
             //MessageBox.Show("ReloadProducts");
             //ListOfProducts = SelectedShop.ShopProducts;
+            //MessageBox.Show(SelectedShop.Id.ToString());
+
+            //CHANGE jest_produkt SET ilosc = {wartosc} WHERE id_sklepu = selectedshop.id and id_produktu = selectedproduct.td
 
             //SelectedShop = null;
         }

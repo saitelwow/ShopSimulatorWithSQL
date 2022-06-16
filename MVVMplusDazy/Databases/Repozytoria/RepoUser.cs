@@ -2,6 +2,7 @@
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,6 +25,38 @@ namespace MVVMplusDazy.Databases.Repozytoria
                 var reader = command.ExecuteReader();
                 while (reader.Read())
                     user.Add(new User(reader));
+                connection.Close();
+            }
+            return user;
+        }
+
+        public static User PobierzKlientaPoID(int id)
+        {
+            string KONKRETNY_KLIENT = WSZYSCY_KLIENCI + $" WHERE ID = {id}";
+            User user = new User();
+            using(var connection = DBConnection.Instance.Connection)
+            {
+                MySqlCommand command = new MySqlCommand(KONKRETNY_KLIENT, connection);
+                connection.Open();
+                var reader = command.ExecuteReader();
+                while(reader.Read())
+                    user = new User(reader);
+                connection.Close();
+            }
+            return user;
+        }
+
+        public static User PobierzKlientaPoLoginHaslo(string login, string haslo)
+        {
+            string KONKRETNY_KLIENT = WSZYSCY_KLIENCI + $" WHERE LOGIN = '{login}' AND HASLO = '{haslo}'";
+            User user = new User();
+            using (var connection = DBConnection.Instance.Connection)
+            {
+                MySqlCommand command = new MySqlCommand(KONKRETNY_KLIENT, connection);
+                connection.Open();
+                var reader = command.ExecuteReader();
+                while (reader.Read())
+                    user = new User(reader);
                 connection.Close();
             }
             return user;

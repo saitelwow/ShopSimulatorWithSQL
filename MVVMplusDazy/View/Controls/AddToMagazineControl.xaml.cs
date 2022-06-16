@@ -44,6 +44,9 @@ namespace MVVMplusDazy.View
         public static readonly DependencyProperty QuantityTextProperty = DependencyProperty.Register(
             "QuantityText", typeof(string), typeof(AddToMagazineControl), new FrameworkPropertyMetadata(null)
             );
+        public static readonly DependencyProperty CanAddtProperty = DependencyProperty.Register(
+            "CanAdd", typeof(string), typeof(AddToMagazineControl), new FrameworkPropertyMetadata(null)
+            );
         #endregion
 
         #region GetSet
@@ -76,6 +79,11 @@ namespace MVVMplusDazy.View
         {
             get { return (string)GetValue(QuantityTextProperty); }
             set { SetValue(QuantityTextProperty, value); }
+        }
+        public string CanAdd
+        {
+            get { return (string)GetValue(CanAddtProperty); }
+            set { SetValue(CanAddtProperty, value); }
         }
         #endregion
 

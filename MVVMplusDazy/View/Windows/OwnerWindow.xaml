@@ -33,7 +33,9 @@
         <local:AddToMagazineControl Grid.Column="1"
                                     Shops="{Binding ListOfShops, Mode=TwoWay}" SelectedShop="{Binding SelectedShop, Mode=TwoWay}"
                                     Products="{Binding ListOfProducts, Mode=TwoWay}" SelectedProduct="{Binding SelectedProduct, Mode=TwoWay}"
-                                    QuantityText="{Binding Quantity, Mode=TwoWay}" AddCl="{Binding MVM.AddToMagazineClick}">
+                                    QuantityText="{Binding Quantity, Mode=TwoWay}" AddCl="{Binding MVM.AddToMagazineClick}" 
+                                    CanAdd="{Binding CanAdd}"
+                                    >
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="ShopChanged">
                     <i:InvokeCommandAction Command="{Binding MVM.SelectedShopChanged}"/>

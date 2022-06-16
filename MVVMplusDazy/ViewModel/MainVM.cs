@@ -28,7 +28,6 @@ namespace MVVMplusDazy.ViewModel
         public ObservableCollection<Product> BuyProducts { get; set; }
         public ObservableCollection<Shop> ListOfShops { get; set; }
         public ObservableCollection<User> ListOfUsers { get; set; }
-        public User Owner { get;}
         #endregion
 
         #region VMy
@@ -43,16 +42,12 @@ namespace MVVMplusDazy.ViewModel
         public MainVM()
         {
             MainModel MM = new MainModel();
-            //ListOfProductsInShop = new ObservableCollection<string>();
-            ListOfShops = new ObservableCollection<Shop>();
-            ListOfUsers = new ObservableCollection<User>();
             SW = new StartWindowVM();
             RW = new RegisterWindowVM();          
             LO = new LogOwnerVM();
             LU = new LogUserVM();
 
             RW.SWVM = SW;
-            RW.ListOfUsers = ListOfUsers;
             RW.MM = MM;
 
             SW.RWVM = RW;
@@ -60,25 +55,11 @@ namespace MVVMplusDazy.ViewModel
             SW.LUVM = LU;
 
             LO.SWVM = SW;
-            LO.USR = Owner;
-            LO.ListOfShops = ListOfShops;
             LO.MVM = this;
 
             LU.SWVM = SW;
-            LU.ListOfUsers = ListOfUsers;
-            LU.ListOfShops = ListOfShops;
             LU.MVM = this;
         }
-
-        #region Metody
-        public void LoadFromDataBase() 
-        {
-            //selecty ze wszystkich tabelek
-            //to jest do testow, wypierdolcie to potem
-            //add user from user table
-
-        }
-        #endregion
 
         #region ICommandy StartControl
         private ICommand _registerUserClick = null;
@@ -273,7 +254,7 @@ namespace MVVMplusDazy.ViewModel
             {
                 if (_selectedShopChanged == null)
                 {
-                    _selectedShopChanged = new RelayCommand(LO.ReloadProducts, arg => true);
+                    _selectedShopChanged = new RelayCommand(LO.ChangeShop, arg => true);
                 }
                 return _selectedShopChanged;
             }

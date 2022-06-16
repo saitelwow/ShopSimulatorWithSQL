@@ -26,5 +26,6 @@ namespace MVVMplusDazy.Databases.Repozytoria
             }
             return shop;
         }
+
     }
 }

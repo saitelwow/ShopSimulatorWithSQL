@@ -15,8 +15,8 @@ namespace MVVMplusDazy.Databases.Encje
 
 	public IsProduct(MySqlDataReader reader)
 		{
-			Id_S = int.Parse(reader["id_sklepu "].ToString());
 			Id_P = int.Parse(reader["id_produktu"].ToString());
+			Id_S = int.Parse(reader["id_sklepu"].ToString());		
 			Quantity = int.Parse(reader["ilosc"].ToString());
 
 		}

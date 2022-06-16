@@ -56,6 +56,7 @@ namespace MVVMplusDazy.ViewModel
             set { _selectedProductToBuy = value; OnPropertyChanged(nameof(SelectedProductToBuy)); }
         }
         public User ActUSR { get; set; }
+        public User testUser { get; set; } = new User();
         #endregion
 
         #region VMy i Windows
@@ -76,14 +77,24 @@ namespace MVVMplusDazy.ViewModel
         }
         public bool CheckInfo()
         {
-            foreach (User usr in ListOfUsers)
+            if (Login == "admin") return false;
+            //ListOfUsers = new ObservableCollection<User>(RepoUser.PobierzWszystkchKlientow());
+            testUser = RepoUser.PobierzKlientaPoLoginHaslo(Login, Password);
+            
+            if (testUser.Login == Login && testUser.Password == Password)
             {
-                if (usr.Login == Login && usr.Password == Password)
-                {
-                    ActUSR = usr;
-                    return true;
-                }
-            }
+                ActUSR = testUser;
+                return true;
+            }         
+            //foreach (User usr in ListOfUsers)
+            //{
+            //    if (Login == "admin") return false;
+            //    if (usr.Login == Login && usr.Password == Password)
+            //    {
+            //        ActUSR = usr;
+            //        return true;
+            //    }
+            //}
             return false;
         }
         public void LogUser(object sender)
@@ -93,6 +104,7 @@ namespace MVVMplusDazy.ViewModel
                 ClearAll();
                 return;
             }
+            MessageBox.Show("Good");
             US = new UserWindow();
             US.DataContext = this;
             US.Show();

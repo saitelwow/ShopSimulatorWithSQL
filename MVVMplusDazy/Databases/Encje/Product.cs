@@ -13,7 +13,6 @@ namespace MVVMplusDazy.Databases.Encje
         public int? Id { get; set; }
         public double Price { get; set; }
         public string CountryFrom { get; set; }
-        public int Quantity { get; set; }
         public string Name { get; set; }
         public string Type { get; set; }
         #endregion
@@ -24,7 +23,6 @@ namespace MVVMplusDazy.Databases.Encje
             Id = int.Parse(reader["id"].ToString());
             Price = double.Parse(reader["cena"].ToString());
             CountryFrom = reader["kraj"].ToString();
-            Quantity = int.Parse(reader["ilosc"].ToString());
             Name = reader["nazwa"].ToString();
             Type = reader["rodzaj"].ToString();
         }
@@ -33,16 +31,14 @@ namespace MVVMplusDazy.Databases.Encje
             Id = product.Id;
             Price = product.Price;
             CountryFrom = product.CountryFrom;
-            Quantity = product.Quantity;
             Name = product.Name;
             Type = product.Type;
         }
-        public Product(double price, string country, int quantity, string name, string type)
+        public Product(double price, string country, string name, string type)
         {
             Id = null;
             Price = price;
             CountryFrom = country;
-            Quantity = quantity;
             Name = name;
             Type = type;
         }
@@ -55,7 +51,7 @@ namespace MVVMplusDazy.Databases.Encje
         }
         public string ToInsert()
         {
-            return $"('{Name}', '{Type}', {Quantity},'{CountryFrom}', '{Price}')";
+            return $"('{Name}', '{Type}','{CountryFrom}', '{Price}')";
         }
         //aby sprawdzić czy istnieje taki product w naszym zbiorze
         public override bool Equals(object obj)

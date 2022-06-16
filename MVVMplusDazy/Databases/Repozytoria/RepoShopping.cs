@@ -50,7 +50,7 @@ namespace MVVMplusDazy.Databases.Repozytoria
 
         // dodawanie zamowienia
 
-        public static bool DodajKlientaDoBazy(Shopping order)
+        public static bool DodajZakupyaDoBazy(Shopping order)
         {
             bool stan = false;
             using (var connection = DBConnection.Instance.Connection)
