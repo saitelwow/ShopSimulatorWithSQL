@@ -9,6 +9,10 @@ using System.Windows;
 namespace MVVMplusDazy.ViewModel
 {
     using Model;
+    using Databases.Encje;
+    using Databases.Repozytoria;
+    using System.Collections.ObjectModel;
+
     internal class RegisterWindowVM : BaseVM
     {
         #region Atrybuty
@@ -29,7 +33,8 @@ namespace MVVMplusDazy.ViewModel
         public string PhoneNumber { get { return _phoneNumber; } set { _phoneNumber = value; OnPropertyChanged(nameof(PhoneNumber)); } }
         public string MailAddress { get { return _mailAddress; } set { _mailAddress = value; OnPropertyChanged(nameof(MailAddress)); } }
         public string CanRegister { get { return _canRegister; } set { _canRegister = value;OnPropertyChanged(nameof(CanRegister)); } }
-        public List<User> ListOfUsers { get; set; }
+        public ObservableCollection<User> ListOfUsers { get; set; }
+        public MainModel MM { get; set; }
         #endregion
 
         #region VMy
@@ -37,7 +42,11 @@ namespace MVVMplusDazy.ViewModel
         public MainVM MVM { get; set; }
         #endregion
 
-        public RegisterWindowVM() { }
+        public RegisterWindowVM() 
+        {
+            MM = new MainModel();
+            ListOfUsers = MM.ListOfUsers; 
+        }
 
         #region Metody
         public void ClearAll()
@@ -60,10 +69,12 @@ namespace MVVMplusDazy.ViewModel
             if (!CheckData()) 
                  return;             
             CanRegister = "False";
-            int lastId = ListOfUsers.ElementAt(ListOfUsers.Count - 1).Id;
-            ListOfUsers.Add(new User(lastId + 1, Login, Password, PhoneNumber, MailAddress));
-            //insert do tabelki uzytkownika
-            MessageBox.Show(ListOfUsers.ElementAt(ListOfUsers.Count - 1).ToString());
+            var user = new User(Login, Password, PhoneNumber, MailAddress);
+            if(MM.DodajUseraDoBazy(user))
+            {
+                ClearAll();
+                MessageBox.Show("User dodany");
+            }
         }
         public bool CheckData()
         {

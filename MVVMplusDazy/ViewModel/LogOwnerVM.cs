@@ -10,6 +10,8 @@ namespace MVVMplusDazy.ViewModel
     using Model;
     using System.Collections.ObjectModel;
     using View;
+    using Databases.Encje;
+    using Databases.Repozytoria;
     class LogOwnerVM : BaseVM
     {
         #region Atrybuty
@@ -53,6 +55,7 @@ namespace MVVMplusDazy.ViewModel
         public MainVM MVM { get; set; }
         public OwnerWindow OW { get; set; }
         public StartWindowVM SWVM { get; set; }
+        
         #endregion
 
 
@@ -108,7 +111,7 @@ namespace MVVMplusDazy.ViewModel
         {
             if(SelectedShop == null) return; 
             //MessageBox.Show("ReloadProducts");
-            ListOfProducts = SelectedShop.ShopProducts;
+            //ListOfProducts = SelectedShop.ShopProducts;
 
             //SelectedShop = null;
         }

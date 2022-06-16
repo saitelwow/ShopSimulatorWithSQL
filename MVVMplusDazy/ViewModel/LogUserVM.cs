@@ -10,7 +10,8 @@ namespace MVVMplusDazy.ViewModel
     using Model;
     using System.Windows;
     using System.Collections.ObjectModel;
-
+    using Databases.Encje;
+    using Databases.Repozytoria;
     class LogUserVM : BaseVM
     {
         #region Atrybuty
@@ -28,7 +29,7 @@ namespace MVVMplusDazy.ViewModel
         public string IsVisible { get { return _isVisible; } set { _isVisible = value; OnPropertyChanged(nameof(IsVisible)); } }
         public string Login { get { return _login; } set { _login = value; OnPropertyChanged(nameof(Login)); } }
         public string Password { get { return _password; } set { _password = value; OnPropertyChanged(nameof(Password)); } }
-        public List<User> ListOfUsers { get; set; }
+        public ObservableCollection<User> ListOfUsers { get; set; }
         public ObservableCollection<string> ListOfProductsInShop
         {
             get { return _listOfProductsInShop; }
@@ -71,7 +72,6 @@ namespace MVVMplusDazy.ViewModel
         #region Metody Kontrolki
         public void ClearAll()
         {
-            
             Login = string.Empty; Password = string.Empty;
         }
         public bool CheckInfo()
@@ -150,20 +150,20 @@ namespace MVVMplusDazy.ViewModel
             //MessageBox.Show(ListOfProductsToBuy.Count.ToString());
             foreach(string str in ListOfProductsToBuy.ToList())
             {
-                bool isInFirst = false;
-                foreach(Shop sh in ListOfShops)
-                {
-                    foreach(Product pr in sh.ShopProducts)
-                    {
-                        if(!(pr.Name == str))
-                            continue;    
-                        if (pr.Quantity < 1)
-                            continue;
-                        pr.Quantity -= 1;
-                        isInFirst = true; break;
-                    }
-                    if (isInFirst) break;
-                }
+                //bool isInFirst = false;
+                //foreach(Shop sh in ListOfShops)
+                //{
+                //    foreach(Product pr in sh.ShopProducts)
+                //    {
+                //        if(!(pr.Name == str))
+                //            continue;    
+                //        if (pr.Quantity < 1)
+                //            continue;
+                //        pr.Quantity -= 1;
+                //        isInFirst = true; break;
+                //    }
+                //    if (isInFirst) break;
+                //}
             }
             foreach(string str in ListOfProductsToBuy.ToList())
             {

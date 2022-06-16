@@ -15,6 +15,8 @@ using System.Windows.Shapes;
 
 namespace MVVMplusDazy.View
 {
+    using Databases.Encje;
+    using Databases.Repozytoria;
     public partial class UserLoginControl : UserControl
     {
         public UserLoginControl()

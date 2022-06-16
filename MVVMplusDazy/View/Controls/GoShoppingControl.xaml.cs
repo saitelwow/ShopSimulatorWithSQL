@@ -17,6 +17,8 @@ namespace MVVMplusDazy.View
 {
     using Model;
     using System.Collections.ObjectModel;
+    using Databases.Encje;
+    using Databases.Repozytoria;
 
     public partial class GoShoppingControl : UserControl
     {

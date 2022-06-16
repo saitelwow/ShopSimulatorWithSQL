@@ -17,6 +17,8 @@ using System.Windows.Shapes;
 namespace MVVMplusDazy.View
 {
     using Model;
+    using Databases.Encje;
+    using Databases.Repozytoria;
     public partial class AddToMagazineControl : UserControl
     {    
         public AddToMagazineControl()

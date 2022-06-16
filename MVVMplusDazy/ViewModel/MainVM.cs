@@ -8,6 +8,8 @@ using System.Windows.Input;
 namespace MVVMplusDazy.ViewModel
 {
     using Model;
+    using Databases.Encje;
+    using Databases.Repozytoria;
     using System.Collections.ObjectModel;
     using System.Windows;
 
@@ -18,14 +20,14 @@ namespace MVVMplusDazy.ViewModel
         private ObservableCollection<Product> _buyProducts;
         private ObservableCollection<Shop> _listOfShops;
         private List<User> _listOfUsers;
-        private User _owner = new User();
+        //private User _owner = new User();
         #endregion
 
         #region GetSet
         public ObservableCollection<string> ListOfProductsInShop { get; set; }
         public ObservableCollection<Product> BuyProducts { get; set; }
         public ObservableCollection<Shop> ListOfShops { get; set; }
-        public List<User> ListOfUsers { get; set; }
+        public ObservableCollection<User> ListOfUsers { get; set; }
         public User Owner { get;}
         #endregion
 
@@ -34,47 +36,35 @@ namespace MVVMplusDazy.ViewModel
         public RegisterWindowVM RW { get; set; }
         public LogOwnerVM LO { get; set; }
         public LogUserVM LU { get; set; }
+        public MainModel MM { get; set; }
         #endregion
 
 
         public MainVM()
         {
-            ListOfProductsInShop = new ObservableCollection<string>();
+            MainModel MM = new MainModel();
+            //ListOfProductsInShop = new ObservableCollection<string>();
             ListOfShops = new ObservableCollection<Shop>();
-            ListOfUsers = new List<User>();
-            RW = new RegisterWindowVM();
+            ListOfUsers = new ObservableCollection<User>();
             SW = new StartWindowVM();
+            RW = new RegisterWindowVM();          
             LO = new LogOwnerVM();
             LU = new LogUserVM();
 
-            //admin do testu, wyjebac potem
-            Owner = new User(1, "admin", "admin", "123456789", "admin@admin.pl");
-            ListOfUsers.Add(Owner);
-            LoadFromDataBase();
-            foreach (Shop sh in ListOfShops)
-                foreach (Product pr in sh.ShopProducts)
-                {
-                    if(!(ListOfProductsInShop.Contains(pr.Name)))
-                        ListOfProductsInShop.Add(pr.Name);
-                }
-                    
-            //do kontrolek, logowanie, rejestracja
             RW.SWVM = SW;
             RW.ListOfUsers = ListOfUsers;
+            RW.MM = MM;
 
             SW.RWVM = RW;
             SW.LOVM = LO;
             SW.LUVM = LU;
 
-            //do okien, kupowanie, uzupelnianie magazynu
             LO.SWVM = SW;
             LO.USR = Owner;
             LO.ListOfShops = ListOfShops;
-            //LO.ListOfProducts = ListOfProductsInShop;
             LO.MVM = this;
 
             LU.SWVM = SW;
-            LU.ListOfProductsInShop = ListOfProductsInShop;
             LU.ListOfUsers = ListOfUsers;
             LU.ListOfShops = ListOfShops;
             LU.MVM = this;
@@ -86,24 +76,7 @@ namespace MVVMplusDazy.ViewModel
             //selecty ze wszystkich tabelek
             //to jest do testow, wypierdolcie to potem
             //add user from user table
-            ListOfUsers.Add(new User(2, "Kamil", "   ", "999999999", "kamil@wp.pl"));
-            ListOfUsers.Add(new User(3, "Jan", "   ", "999999999", "jano@wp.pl"));
-            ListOfUsers.Add(new User(4, "Michu", "   ", "999999999", "michu@wp.pl"));
 
-            // add shops from shops table
-            ListOfShops.Add(new Shop(1, "Ul. Polska 2", "Psia Wólka"));
-            ListOfShops.Add(new Shop(2, "Ul. Ziemna 23", "Owocowo"));
-
-            //add products to each shops from tables
-            ListOfShops.ElementAt(0).ShopProducts.Add(new Product(1, 0, 15.5, "Polska", "Ogorek", "Warzywo"));
-            ListOfShops.ElementAt(0).ShopProducts.Add(new Product(2, 10, 11.5, "Niemcy", "Jablko", "Owoc"));
-            ListOfShops.ElementAt(0).ShopProducts.Add(new Product(3, 0, 12.5, "Hiszpania", "Papryka", "Warzywo"));
-            ListOfShops.ElementAt(0).ShopProducts.Add(new Product(4, 11, 22.5, "Wlochy", "Czeresnie", "Owoc"));
-
-            ListOfShops.ElementAt(1).ShopProducts.Add(new Product(5, 11, 15.5, "Polska", "Ogorek", "Warzywo"));
-            ListOfShops.ElementAt(1).ShopProducts.Add(new Product(6, 14, 11.5, "Niemcy", "Jablko", "Owoc"));
-            ListOfShops.ElementAt(1).ShopProducts.Add(new Product(7, 9, 12.5, "Hiszpania", "Papryka", "Warzywo"));
-            ListOfShops.ElementAt(1).ShopProducts.Add(new Product(8, 4, 22.5, "Wlochy", "Czeresnie", "Owoc"));
         }
         #endregion
 
@@ -168,6 +141,7 @@ namespace MVVMplusDazy.ViewModel
                 if (_registerClick == null)
                 {
                     _registerClick = new RelayCommand(RW.Register, arg => true);
+                    
                 }
                 return _registerClick;
             }

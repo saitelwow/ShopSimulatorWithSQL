@@ -8,6 +8,8 @@ using System.Windows;
 namespace MVVMplusDazy.ViewModel
 {
     using Model;
+    using Databases.Encje;
+    using Databases.Repozytoria;
     internal class StartWindowVM : BaseVM
     {
         #region Atrybuty

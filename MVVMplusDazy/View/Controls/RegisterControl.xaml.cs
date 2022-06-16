@@ -16,6 +16,8 @@ using System.Windows.Shapes;
 
 namespace MVVMplusDazy.View
 {
+    using Databases.Encje;
+    using Databases.Repozytoria;
     public partial class RegisterControl : UserControl
     {
         // login haslo powtorz telefon mail registerClick
