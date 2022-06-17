@@ -232,6 +232,18 @@ namespace MVVMplusDazy.ViewModel
                 return _buyClick;
             }
         }
+        private ICommand _selectedProductChanged = null;
+        public ICommand SelectedProductChanged
+        {
+            get
+            {
+                if (_selectedProductChanged == null)
+                {
+                    _selectedProductChanged = new RelayCommand(LU.LoadQuantity, arg => true);
+                }
+                return _selectedProductChanged;
+            }
+        }
         #endregion
 
         #region ICommandy AddToMagazineControl

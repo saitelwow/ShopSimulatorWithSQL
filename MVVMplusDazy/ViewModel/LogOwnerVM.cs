@@ -24,6 +24,8 @@ namespace MVVMplusDazy.ViewModel
         private Product _selectedProduct = null;
         private string _quantity;
         private string _canAdd = "True";
+        private ObservableCollection<string> _listOfNamesAndQuantities = new ObservableCollection<string>();
+        private string _selecNameAndQua = string.Empty;
         #endregion
 
         #region GetSet
@@ -57,6 +59,16 @@ namespace MVVMplusDazy.ViewModel
             get { return _canAdd; }
             set { _canAdd = value; OnPropertyChanged(nameof(CanAdd)); }
         }
+        public ObservableCollection<string> ListOfNamesAndQuantities
+        {
+            get { return _listOfNamesAndQuantities; }
+            set { _listOfNamesAndQuantities = value; OnPropertyChanged(nameof(ListOfNamesAndQuantities)); }
+        }
+        public string SelecNameAndQua
+        {
+            get { return _selecNameAndQua; }
+            set { _selecNameAndQua = value; OnPropertyChanged(nameof(SelecNameAndQua)); }
+        }
         #endregion
 
         #region VMy i Windows
@@ -67,7 +79,12 @@ namespace MVVMplusDazy.ViewModel
         #endregion
 
 
-        public LogOwnerVM() { }
+        public LogOwnerVM() 
+        {
+            ListOfShops = new ObservableCollection<Shop>(RepoShop.PobierzWszystkieSklepy());
+            ListOfProducts = new ObservableCollection<Product>(RepoProduct.PobierzWszystkieProdukty());
+            SelectedShop = ListOfShops.ElementAt(0);
+        }
 
         #region Metody Kontrolki
         void ClearAll()
@@ -106,10 +123,18 @@ namespace MVVMplusDazy.ViewModel
         #region Metody Okna
         public void Load()
         {
-            ListOfShops = new ObservableCollection<Shop>(RepoShop.PobierzWszystkieSklepy());
-            ListOfProducts = new ObservableCollection<Product>(RepoProduct.PobierzWszystkieProdukty());
-            //ListOfShops = RepoShop.PobierzWszystkieSklepy();
-            //ListOfProducts = new ObservableCollection<Product>(RepoIsProduct.PobierzWszystkieProduktySklepu());
+            if (SelectedShop == null) return;
+            ListOfNamesAndQuantities.Clear();
+            string command = $"WHERE id_sklepu = {SelectedShop.Id}";
+            List<IsProduct> temp = RepoIsProduct.PobierzWszystkieProduktySklepuZKomenda(command);
+            int i = 0;
+            foreach (IsProduct ip in temp)
+            {
+                ListOfNamesAndQuantities.Add($"{ListOfProducts.ElementAt(i)}, {ip.Quantity}");
+                i += 1;
+            }
+
+            //SelectedProductInShop = null;
         }
         public void AddToMagazineClick(object sender)
         {
@@ -119,25 +144,28 @@ namespace MVVMplusDazy.ViewModel
                 return;
             }               
             if (Convert.ToInt32(Quantity) <= 0) return;
-            if (SelectedProduct == null) return;
-            ActualProductId = (int)SelectedProduct.Id;
-            if (RepoIsProduct.EdytujProduktWBazie(Convert.ToInt32(Quantity), ActualProductId, ActualShopId));
+            if (SelecNameAndQua == null) return;
+            ActualProductId = ListOfNamesAndQuantities.IndexOf(SelecNameAndQua) + 1;
+            ActualShopId = SelectedShop.Id;
+            if (RepoIsProduct.EdytujProduktWBazieAsortyment(Convert.ToInt32(Quantity), ActualProductId, ActualShopId)) ;
             {
                 MessageBox.Show("Udalo sie");
             }
 
             Quantity = string.Empty;
             CanAdd = "False";
+            Load();
             //ReloadProducts(true);         //reload listy po uzupelnieniu
             //do smth
         }
         public void ChangeShop(object sender)
         {
             if(SelectedShop == null) return;          
-            ActualShopId = SelectedShop.Id;            
-            List<IsProduct> temp = new List<IsProduct>();
-            temp = RepoIsProduct.PobierzProduktySklepuZID(ActualShopId);
+            //ActualShopId = SelectedShop.Id;            
+            //List<IsProduct> temp = new List<IsProduct>();
+            //temp = RepoIsProduct.PobierzProduktySklepuZID(ActualShopId);
             CanAdd = "True";
+            Load();
             //MessageBox.Show(temp.ElementAt(1).Quantity.ToString());
             //MessageBox.Show("ReloadProducts");
             //ListOfProducts = SelectedShop.ShopProducts;

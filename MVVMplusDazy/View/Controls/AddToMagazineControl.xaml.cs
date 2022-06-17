@@ -36,10 +36,10 @@ namespace MVVMplusDazy.View
             "SelectedShop", typeof(Shop), typeof(AddToMagazineControl), new FrameworkPropertyMetadata(null)
             );
         public static readonly DependencyProperty ProductsProperty = DependencyProperty.Register(
-            "Products", typeof(ObservableCollection<Product>), typeof(AddToMagazineControl), new FrameworkPropertyMetadata(null)
+            "Products", typeof(ObservableCollection<string>), typeof(AddToMagazineControl), new FrameworkPropertyMetadata(null)
             );
         public static readonly DependencyProperty SelectedProductProperty = DependencyProperty.Register(
-            "SelectedProduct", typeof(Product), typeof(AddToMagazineControl), new FrameworkPropertyMetadata(null)
+            "SelectedProduct", typeof(string), typeof(AddToMagazineControl), new FrameworkPropertyMetadata(null)
             );
         public static readonly DependencyProperty QuantityTextProperty = DependencyProperty.Register(
             "QuantityText", typeof(string), typeof(AddToMagazineControl), new FrameworkPropertyMetadata(null)
@@ -65,14 +65,14 @@ namespace MVVMplusDazy.View
             get { return (Shop)GetValue(SelectedShopProperty); }
             set { SetValue(SelectedShopProperty, value); }
         }
-        public ObservableCollection<Product> Products
+        public ObservableCollection<string> Products
         {
-            get { return (ObservableCollection<Product>)GetValue(ProductsProperty); }
+            get { return (ObservableCollection<string>)GetValue(ProductsProperty); }
             set { SetValue(ProductsProperty, value); }
         }
-        public Product SelectedProduct
+        public string SelectedProduct
         {
-            get { return (Product)GetValue(SelectedProductProperty); }
+            get { return (string)GetValue(SelectedProductProperty); }
             set { SetValue(SelectedProductProperty, value); }
         }
         public string QuantityText

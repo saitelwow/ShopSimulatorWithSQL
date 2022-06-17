@@ -63,6 +63,12 @@ namespace MVVMplusDazy.Databases.Encje
             if (CountryFrom.ToLower() != product.CountryFrom.ToLower()) return false;
             return true;
         }
+        public string GetInfo()
+        {
+            string res = string.Empty;
+            res = $"Nazwa: {Name}\nCena: {Price}\nKraj pochodzenia: {CountryFrom}\nTyp: {Type}";
+            return res;
+        }
         #endregion
     }
 }

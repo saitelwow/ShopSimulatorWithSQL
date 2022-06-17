@@ -49,6 +49,21 @@ namespace MVVMplusDazy.Databases.Repozytoria
             return shopProd;
         }
 
+        public static List<IsProduct> PobierzWszystkieProduktySklepuZKomenda(string comm)
+        {
+            List<IsProduct> shopProd = new List<IsProduct>();
+            using (var connection = DBConnection.Instance.Connection)
+            {
+                MySqlCommand command = new MySqlCommand(WSZYSTKIE_PRODUKTYSKLEPU + " " + comm, connection);
+                connection.Open();
+                var reader = command.ExecuteReader();
+                while (reader.Read())
+                    shopProd.Add(new IsProduct(reader));
+                connection.Close();
+            }
+            return shopProd;
+        }
+
         public static List<IsProduct> PobierzProduktySklepuZID(int id)
         {
             string KONKRET = WSZYSTKIE_PRODUKTYSKLEPU + $" WHERE id_sklepu = {id} ";
@@ -66,7 +81,7 @@ namespace MVVMplusDazy.Databases.Repozytoria
         }
 
         //Update
-        public static bool EdytujProduktWBazie(int quantity, int idP, int idS)
+        public static bool EdytujProduktWBazieAsortyment(int quantity, int idP, int idS)
         {
             bool stan = false;
             using (var connection = DBConnection.Instance.Connection)
@@ -82,7 +97,22 @@ namespace MVVMplusDazy.Databases.Repozytoria
             }
             return stan;
         }
+        public static bool EdytujProduktWBazieKupowanie(int quantity, int idP, int idS)
+        {
+            bool stan = false;
+            using (var connection = DBConnection.Instance.Connection)
+            {
+                string EDYTUJ_Produkt = $"UPDATE czy_jest_produkt SET ilosc = {quantity} WHERE id_produktu={idP} AND id_sklepu = {idS}";
 
+                MySqlCommand command = new MySqlCommand(EDYTUJ_Produkt, connection);
+                connection.Open();
+                var n = command.ExecuteNonQuery();
+                if (n == 1) stan = true;
+
+                connection.Close();
+            }
+            return stan;
+        }
         //Usun
         public static bool UsunProduktWBazie(IsProduct shopProd)
         {

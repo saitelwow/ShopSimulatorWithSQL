@@ -33,5 +33,11 @@
         <Button Content="Kup" HorizontalAlignment="Center" Margin="0,340,0,0" Width="100" Height="35" VerticalAlignment="Top"
                 Command="{Binding BuyCl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, 
             RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"/>
+        <ComboBox HorizontalAlignment="Center" Margin="0,100,0,0" VerticalAlignment="Top" Width="100" Height="35"
+                  SelectionChanged="RaiseSelectedQuantityChanged" FontSize="20"
+                  ItemsSource="{Binding QuantityCombobox, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, 
+            RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
+                  SelectedItem="{Binding SelectedQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, 
+            RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"/>
     </Grid>
 </UserControl>

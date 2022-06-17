@@ -37,9 +37,15 @@
                                  BuyCl="{Binding MVM.BuyClick}"
                                  ProductsInShop="{Binding ListOfProductsInShop, Mode=TwoWay}" 
                                  SelectedProductInShop="{Binding SelectedProductInShop, Mode=TwoWay}"
-                                 ProductsToBuy="{Binding ListOfProductsToBuy, Mode=TwoWay}"
-                                 SelectedProductToBuy="{Binding SelectedProductToBuy, Mode=TwoWay}">
-            
+                                 ProductsToBuy="{Binding StrListOfProductsToBuy, Mode=TwoWay}"
+                                 SelectedProductToBuy="{Binding SelectedStrProductToBuy, Mode=TwoWay}"
+                                 QuantityCombobox="{Binding QuantityOfProduct, Mode=TwoWay}"
+                                 SelectedQuantity="{Binding SelectedQuantity, Mode=TwoWay}">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="ProdutcInShopChanged">
+                    <i:InvokeCommandAction Command="{Binding MVM.SelectedProductChanged}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
         </local:GoShoppingControl>
         
     </Grid>

@@ -40,16 +40,22 @@ namespace MVVMplusDazy.View
             "BuyCl", typeof(ICommand), typeof(GoShoppingControl), new FrameworkPropertyMetadata(null)
             );
         public static readonly DependencyProperty ProductsInShopProperty = DependencyProperty.Register(
-            "ProductsInShop", typeof(ObservableCollection<string>), typeof(GoShoppingControl), new FrameworkPropertyMetadata(null)
+            "ProductsInShop", typeof(ObservableCollection<Product>), typeof(GoShoppingControl), new FrameworkPropertyMetadata(null)
             );
         public static readonly DependencyProperty SelectedProductInShopProperty = DependencyProperty.Register(
-            "SelectedProductInShop", typeof(string), typeof(GoShoppingControl), new FrameworkPropertyMetadata(null)
+            "SelectedProductInShop", typeof(Product), typeof(GoShoppingControl), new FrameworkPropertyMetadata(null)
             );
         public static readonly DependencyProperty ProductsToBuyProperty = DependencyProperty.Register(
             "ProductsToBuy", typeof(ObservableCollection<string>), typeof(GoShoppingControl), new FrameworkPropertyMetadata(null)
             );
         public static readonly DependencyProperty SelectedProductToBuyProperty = DependencyProperty.Register(
             "SelectedProductToBuy", typeof(string), typeof(GoShoppingControl), new FrameworkPropertyMetadata(null)
+            );
+        public static readonly DependencyProperty QuantityComboboxProperty = DependencyProperty.Register(
+            "QuantityCombobox", typeof(ObservableCollection<int>), typeof(GoShoppingControl), new FrameworkPropertyMetadata(null)
+            );
+        public static readonly DependencyProperty SelectedQuantityProperty = DependencyProperty.Register(
+            "SelectedQuantity", typeof(int), typeof(GoShoppingControl), new FrameworkPropertyMetadata(null)
             );
         #endregion
 
@@ -74,14 +80,14 @@ namespace MVVMplusDazy.View
             get { return (ICommand)GetValue(BuyClProperty); }
             set { SetValue(BuyClProperty, value); }
         }
-        public ObservableCollection<string> ProductsInShop
+        public ObservableCollection<Product> ProductsInShop
         {
-            get { return (ObservableCollection<string>)GetValue(ProductsInShopProperty); }
+            get { return (ObservableCollection<Product>)GetValue(ProductsInShopProperty); }
             set { SetValue(ProductsInShopProperty, value); }
         }
-        public string SelectedProductInShop
+        public Product SelectedProductInShop
         {
-            get { return (string)GetValue(SelectedProductInShopProperty); }
+            get { return (Product)GetValue(SelectedProductInShopProperty); }
             set { SetValue(SelectedProductInShopProperty, value); }
         }
         public ObservableCollection<string> ProductsToBuy
@@ -92,6 +98,16 @@ namespace MVVMplusDazy.View
         public string SelectedProductToBuy
         {
             get { return (string)GetValue(SelectedProductToBuyProperty); }
+            set { SetValue(SelectedProductToBuyProperty, value); }
+        }
+        public ObservableCollection<int> QuantityCombobox
+        {
+            get { return (ObservableCollection<int>)GetValue(QuantityComboboxProperty); }
+            set { SetValue(SelectedProductToBuyProperty, value); }
+        }
+        public int SelectedQuantity
+        {
+            get { return (int)GetValue(SelectedQuantityProperty); }
             set { SetValue(SelectedProductToBuyProperty, value); }
         }
         #endregion
@@ -175,6 +191,21 @@ namespace MVVMplusDazy.View
         void RaiseProdutcToBuyChanged(object sender, SelectionChangedEventArgs e)
         {
             RoutedEventArgs args = new RoutedEventArgs(ProdutcToBuyChangedEvent);
+            RaiseEvent(args);
+        }
+        #endregion
+
+        #region EventyCB
+        public static readonly RoutedEvent SelectedQuantityChangedEvent =
+            EventManager.RegisterRoutedEvent("OtherQuantitySelected", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(GoShoppingControl));
+        public event RoutedEventHandler SelectedQuantityChanged
+        {
+            add { AddHandler(SelectedQuantityChangedEvent, value); }
+            remove { RemoveHandler(SelectedQuantityChangedEvent, value); }
+        }
+        void RaiseSelectedQuantityChanged(object sender, SelectionChangedEventArgs e)
+        {
+            RoutedEventArgs args = new RoutedEventArgs(SelectedQuantityChangedEvent);
             RaiseEvent(args);
         }
         #endregion
