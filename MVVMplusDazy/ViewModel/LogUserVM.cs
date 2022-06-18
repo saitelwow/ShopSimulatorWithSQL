@@ -27,6 +27,8 @@ namespace MVVMplusDazy.ViewModel
         private string _selectedStrProductToBuy = null;
         private ObservableCollection<int> _quantityOfProduct = new ObservableCollection<int>();
         private int? _selectedQuantity;
+        private bool _shoppingVisibility = true;
+        private bool _transactionVisibility = false;
         #endregion
 
         #region GetSet
@@ -34,66 +36,33 @@ namespace MVVMplusDazy.ViewModel
         public string Login { get { return _login; } set { _login = value; OnPropertyChanged(nameof(Login)); } }
         public string Password { get { return _password; } set { _password = value; OnPropertyChanged(nameof(Password)); } }
         public ObservableCollection<User> ListOfUsers { get; set; }
-        public ObservableCollection<Product> ListOfProductsInShop
-        {
-            get { return _listOfProductsInShop; }
-            set { _listOfProductsInShop = value; OnPropertyChanged(nameof(ListOfProductsInShop)); }
-        }
-        public ObservableCollection<Product> ListOfProductsToBuy
-        {
-            get { return _listOfProductsToBuy; }
-            set { _listOfProductsToBuy = value; OnPropertyChanged(nameof(ListOfProductsToBuy)); }
-        }
-        public ObservableCollection<Shop> ListOfShops
-        {
-            get { return _listOfShops; }
-            set { _listOfShops = value; OnPropertyChanged(nameof(ListOfShops)); }
-        }
-        public Product SelectedProductInShop
-        {
-            get { return _selectedProductInShop; }
-            set { _selectedProductInShop = value; OnPropertyChanged(nameof(SelectedProductInShop)); }
-        }
-        public Product SelectedProductToBuy
-        {
-            get { return _selectedProductToBuy; }
-            set { _selectedProductToBuy = value; OnPropertyChanged(nameof(SelectedProductToBuy)); }
-        }
+        public ObservableCollection<Product> ListOfProductsInShop{ get { return _listOfProductsInShop; }set { _listOfProductsInShop = value; OnPropertyChanged(nameof(ListOfProductsInShop)); }}
+        public ObservableCollection<Product> ListOfProductsToBuy {get { return _listOfProductsToBuy; }set { _listOfProductsToBuy = value; OnPropertyChanged(nameof(ListOfProductsToBuy)); }}
+        public ObservableCollection<Shop> ListOfShops { get { return _listOfShops; } set { _listOfShops = value; OnPropertyChanged(nameof(ListOfShops)); } }
+        public Product SelectedProductInShop {get { return _selectedProductInShop; }set { _selectedProductInShop = value; OnPropertyChanged(nameof(SelectedProductInShop)); }}
+        public Product SelectedProductToBuy{ get { return _selectedProductToBuy; }set { _selectedProductToBuy = value; OnPropertyChanged(nameof(SelectedProductToBuy)); } }
         public User ActUSR { get; set; }
         public User testUser { get; set; } = new User();
-        public ObservableCollection<int> QuantityOfProduct
-        {
-            get { return _quantityOfProduct; }
-            set { _quantityOfProduct = value; OnPropertyChanged(nameof(QuantityOfProduct)); }
-        }
-        public int? SelectedQuantity
-        {
-            get { return _selectedQuantity; }
-            set { _selectedQuantity = value; OnPropertyChanged(nameof(SelectedQuantity)); }
-        }
-        public ObservableCollection<string> StrListOfProductsToBuy
-        {
-            get { return _strListOfProductsToBuy; }
-            set { _strListOfProductsToBuy = value; OnPropertyChanged(nameof(StrListOfProductsToBuy)); }
-        }
+        public ObservableCollection<int> QuantityOfProduct { get { return _quantityOfProduct; }set { _quantityOfProduct = value; OnPropertyChanged(nameof(QuantityOfProduct)); } }
+        public int? SelectedQuantity{get { return _selectedQuantity; }set { _selectedQuantity = value; OnPropertyChanged(nameof(SelectedQuantity)); }}
+        public ObservableCollection<string> StrListOfProductsToBuy {get { return _strListOfProductsToBuy; }set { _strListOfProductsToBuy = value; OnPropertyChanged(nameof(StrListOfProductsToBuy)); }}
         public string SelectedStrProductToBuy
         {
             get { return _selectedStrProductToBuy; }
             set { _selectedStrProductToBuy = value; OnPropertyChanged(nameof(SelectedStrProductToBuy)); }
         }
+        public bool ShoppingVisibility { get { return _shoppingVisibility; } set { _shoppingVisibility = value; OnPropertyChanged(nameof(ShoppingVisibility)); } }
+        public bool TransactionVisibility { get { return _transactionVisibility; } set { _transactionVisibility = value; OnPropertyChanged(nameof(TransactionVisibility)); } }
         #endregion
 
         #region VMy i Windows
         public MainVM MVM { get; set; }
         public UserWindow US { get; set; }
         public StartWindowVM SWVM { get; set; }
+        public MainModel MM { get; set; } = new MainModel();
         #endregion
 
-        public LogUserVM() 
-        {
-            //ListOfProductsToBuy = new ObservableCollection<Product>();
-            
-        }
+        public LogUserVM() { }
 
         #region Metody Kontrolki
         public void ClearAll()
@@ -103,9 +72,7 @@ namespace MVVMplusDazy.ViewModel
         public bool CheckInfo()
         {
             if (Login == "admin") return false;
-            //ListOfUsers = new ObservableCollection<User>(RepoUser.PobierzWszystkchKlientow());
-            testUser = RepoUser.PobierzKlientaPoLoginHaslo(Login, Password);
-            
+            testUser = MM.OddajUseraPoLoginHaslo(Login, Password);
             if (testUser.Login == Login && testUser.Password == Password)
             {
                 ActUSR = testUser;
@@ -135,10 +102,21 @@ namespace MVVMplusDazy.ViewModel
         }
         #endregion
 
-        #region Metody Okna
+        #region MetodyOkna
+        public void ShowTransaction(object sender)
+        {
+            MessageBox.Show("ShowTransaction");
+        }
+        public void ShowShopping(object sender)
+        {
+            MessageBox.Show("ShowShopping");
+        }
+        #endregion
+
+        #region MetodyKupowania
         private void Load()
         {
-            ListOfProductsInShop = new ObservableCollection<Product>(RepoProduct.PobierzWszystkieProdukty());
+            ListOfProductsInShop = new ObservableCollection<Product>(MM.ListOfProducts);
             StrListOfProductsToBuy.Clear();
             SelectedStrProductToBuy = null;
             ListOfProductsToBuy.Clear();
@@ -151,7 +129,7 @@ namespace MVVMplusDazy.ViewModel
             QuantityOfProduct.Clear();
             SelectedQuantity = null;
             string command = $"WHERE id_produktu = {SelectedProductInShop.Id}";
-            List<IsProduct> temp = RepoIsProduct.PobierzWszystkieProduktySklepuZKomenda(command);
+            ObservableCollection<IsProduct> temp = MM.OddajIsProductZKomenda(command);
             int qua = 0;
             foreach(IsProduct ip in temp)
             {
@@ -202,6 +180,8 @@ namespace MVVMplusDazy.ViewModel
         }
         public void BuyClick(object sender)
         {
+            int lastTransaction = MM.OddajIdOstatniejTransakcji();
+
             int[] tableOfQuantity = new int[StrListOfProductsToBuy.Count];
             int i = 0;
             foreach(string str in StrListOfProductsToBuy)
@@ -214,10 +194,15 @@ namespace MVVMplusDazy.ViewModel
             double overall = 0;
             foreach (Product pr in ListOfProductsToBuy)
             {
-                List<IsProduct> temp = RepoIsProduct.PobierzWszystkieProduktySklepuZKomenda($"WHERE id_produktu = {pr.Id}");
+                ObservableCollection<IsProduct> temp = MM.OddajIsProductZKomenda($"WHERE id_produktu = {pr.Id}");
                 bool isGood = false;
                 res += pr.Name + ": " + (pr.Price * tableOfQuantity[i]) + "\n";
                 overall += (pr.Price * tableOfQuantity[i]);
+                //insert to zakupy {id produktu} {id user} {tableofquanity[i]} {lasttransaction + 1}
+                if(!MM.DodajDoBazyTransakcji(pr.Id, ActUSR.Id, tableOfQuantity[i], (lastTransaction + 1)))
+                {
+                    MessageBox.Show("Blad"); return;
+                }
                 foreach (IsProduct ip in temp)
                 {     
                     if (ip.Quantity >= tableOfQuantity[i])
@@ -231,7 +216,7 @@ namespace MVVMplusDazy.ViewModel
                         tableOfQuantity[i] -= ip.Quantity;
                         ip.Quantity = 0;
                     }
-                    RepoIsProduct.EdytujProduktWBazieKupowanie(ip.Quantity, ip.Id_P, ip.Id_S);
+                    MM.ZmniejszQuantityIsProduct(ip.Quantity, ip.Id_P, ip.Id_S);                   
                     if (isGood) break;
                 }
                 i += 1;
@@ -240,6 +225,10 @@ namespace MVVMplusDazy.ViewModel
             MessageBox.Show(res);
             Load();
         }
+        #endregion
+
+        #region MetodyTransakcji
+
         #endregion
     }
 }

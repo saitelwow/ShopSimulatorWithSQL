@@ -31,22 +31,16 @@ namespace MVVMplusDazy.ViewModel
         #endregion
 
         #region VMy
-        public StartWindowVM SW { get; set; }
-        public RegisterWindowVM RW { get; set; }
-        public LogOwnerVM LO { get; set; }
-        public LogUserVM LU { get; set; }
-        public MainModel MM { get; set; }
+        public StartWindowVM SW { get; set; } = new StartWindowVM();
+        public RegisterWindowVM RW { get; set; } = new RegisterWindowVM();
+        public LogOwnerVM LO { get; set; } = new LogOwnerVM();
+        public LogUserVM LU { get; set; } = new LogUserVM();
+        public MainModel MM { get; set; } = new MainModel();
         #endregion
 
 
         public MainVM()
         {
-            MainModel MM = new MainModel();
-            SW = new StartWindowVM();
-            RW = new RegisterWindowVM();          
-            LO = new LogOwnerVM();
-            LU = new LogUserVM();
-
             RW.SWVM = SW;
             RW.MM = MM;
 
@@ -56,9 +50,11 @@ namespace MVVMplusDazy.ViewModel
 
             LO.SWVM = SW;
             LO.MVM = this;
+            LO.MM = MM;
 
             LU.SWVM = SW;
             LU.MVM = this;
+            LU.MM = MM;
         }
 
         #region ICommandy StartControl

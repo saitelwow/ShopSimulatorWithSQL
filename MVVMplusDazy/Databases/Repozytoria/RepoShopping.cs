@@ -11,11 +11,9 @@ namespace MVVMplusDazy.Databases.Repozytoria
     class RepoShopping
     {
         private const string WSZYSTKIE_ZAMOWIENIA = "SELECT * FROM zakupy";
-        private const string DODAJ_ZAKUP = "INSERT INTO 'klient'('login', 'haslo', 'telefon', 'mail') VALUES ";
+        private const string DODAJ_ZAKUP = "INSERT INTO zakupy(`id_produktu`, `id_klienta`, `ilosc`, `id_transakcji`) VALUES ";
         private const string ZAMOWIENIE = "SELECT * FROM zakupy WHERE id_klienta=";
 
-
-        // zakupy klienta, ale i tak nie mamy histori jest po to, aby zielonka/brociek i pleszczu się cieszyli patrząc, że takie coś istnieje
         public static List<Shopping> PobierzZakupyKlienta(int id)
         {
             List<Shopping> order = new List<Shopping>();
@@ -32,7 +30,6 @@ namespace MVVMplusDazy.Databases.Repozytoria
             return order;
         }
 
-        // to tak samo nie będzie używane tylko jest po to, aby im się morda cieszyła
         public static List<Shopping> PobierzWszystkieZakupy()
         {
             List<Shopping> order = new List<Shopping>();

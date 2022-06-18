@@ -30,6 +30,14 @@ namespace MVVMplusDazy.Databases.Encje
             PhoneNumber = phone;
             MailAddress = mail;
         }
+        public User(User user)
+        {
+            Id = user.Id;
+            Login = user.Login;
+            Password = user.Password;
+            PhoneNumber = user.PhoneNumber;
+            MailAddress = user.MailAddress;
+        }
         public User() { }
 
         public string ToInsert()

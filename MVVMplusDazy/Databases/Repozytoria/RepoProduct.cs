@@ -54,7 +54,7 @@ namespace MVVMplusDazy.Databases.Repozytoria
         //    bool stan = false;
         //    using (var connection = DBConnection.Instance.Connection)
         //    {
-        //        string EDYTUJ_Produkt = $"UPDATE osoby SET ilosc='{product.Quantity}' WHERE nazwa={name}";
+        //        string EDYTUJ_Produkt = $"UPDATE produkty SET ilosc='{product.Quantity}' WHERE nazwa={name}";
 
         //        MySqlCommand command = new MySqlCommand(EDYTUJ_Produkt, connection);
         //        connection.Open();

@@ -30,17 +30,20 @@
                    Text="{Binding USR.PhoneNumber}" VerticalAlignment="Top" FontSize="15" Width="125" Background="LightGray"/>
         <TextBlock HorizontalAlignment="Left" Margin="75,220,0,0" TextWrapping="Wrap" 
                    Text="{Binding USR.MailAddress}" VerticalAlignment="Top" FontSize="15" Width="125" Background="LightGray"/>
-        <local:AddToMagazineControl Grid.Column="1"
+        <Grid Grid.Column="1">
+            <local:AddToMagazineControl
                                     Shops="{Binding ListOfShops, Mode=TwoWay}" SelectedShop="{Binding SelectedShop, Mode=TwoWay}"
                                     Products="{Binding ListOfNamesAndQuantities, Mode=TwoWay}" SelectedProduct="{Binding SelecNameAndQua, Mode=TwoWay}"
                                     QuantityText="{Binding Quantity, Mode=TwoWay}" AddCl="{Binding MVM.AddToMagazineClick}" 
                                     CanAdd="{Binding CanAdd}"
                                     >
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="ShopChanged">
-                    <i:InvokeCommandAction Command="{Binding MVM.SelectedShopChanged}"/>
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
-        </local:AddToMagazineControl>
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="ShopChanged">
+                        <i:InvokeCommandAction Command="{Binding MVM.SelectedShopChanged}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </local:AddToMagazineControl>
+        </Grid>
+        
     </Grid>
 </Window>

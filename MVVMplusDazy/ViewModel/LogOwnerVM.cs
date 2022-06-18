@@ -75,14 +75,14 @@ namespace MVVMplusDazy.ViewModel
         public MainVM MVM { get; set; }
         public OwnerWindow OW { get; set; }
         public StartWindowVM SWVM { get; set; }
-        
+        public MainModel MM { get; set; } = new MainModel();
         #endregion
 
 
         public LogOwnerVM() 
         {
-            ListOfShops = new ObservableCollection<Shop>(RepoShop.PobierzWszystkieSklepy());
-            ListOfProducts = new ObservableCollection<Product>(RepoProduct.PobierzWszystkieProdukty());
+            ListOfShops = new ObservableCollection<Shop>(MM.ListOfShops);
+            ListOfProducts = new ObservableCollection<Product>(MM.ListOfProducts);
             SelectedShop = ListOfShops.ElementAt(0);
         }
 
@@ -94,7 +94,7 @@ namespace MVVMplusDazy.ViewModel
         }
         public bool CheckInfo()
         {
-            USR = RepoUser.PobierzKlientaPoID(1);
+            USR = MM.OddajUseraPoId(1);
             if (USR.Login == this.Login && USR.Password == this.Password)
                 return true;
             return false;
@@ -126,15 +126,13 @@ namespace MVVMplusDazy.ViewModel
             if (SelectedShop == null) return;
             ListOfNamesAndQuantities.Clear();
             string command = $"WHERE id_sklepu = {SelectedShop.Id}";
-            List<IsProduct> temp = RepoIsProduct.PobierzWszystkieProduktySklepuZKomenda(command);
+            ObservableCollection<IsProduct> temp = MM.OddajIsProductZKomenda(command);
             int i = 0;
             foreach (IsProduct ip in temp)
             {
                 ListOfNamesAndQuantities.Add($"{ListOfProducts.ElementAt(i)}, {ip.Quantity}");
                 i += 1;
             }
-
-            //SelectedProductInShop = null;
         }
         public void AddToMagazineClick(object sender)
         {
@@ -147,7 +145,8 @@ namespace MVVMplusDazy.ViewModel
             if (SelecNameAndQua == null) return;
             ActualProductId = ListOfNamesAndQuantities.IndexOf(SelecNameAndQua) + 1;
             ActualShopId = SelectedShop.Id;
-            if (RepoIsProduct.EdytujProduktWBazieAsortyment(Convert.ToInt32(Quantity), ActualProductId, ActualShopId)) ;
+            
+            if(MM.ZwiekszQuantityIsProduct(Convert.ToInt32(Quantity), ActualProductId, ActualShopId)) ;
             {
                 MessageBox.Show("Udalo sie");
             }
@@ -163,7 +162,6 @@ namespace MVVMplusDazy.ViewModel
             if(SelectedShop == null) return;          
             //ActualShopId = SelectedShop.Id;            
             //List<IsProduct> temp = new List<IsProduct>();
-            //temp = RepoIsProduct.PobierzProduktySklepuZID(ActualShopId);
             CanAdd = "True";
             Load();
             //MessageBox.Show(temp.ElementAt(1).Quantity.ToString());

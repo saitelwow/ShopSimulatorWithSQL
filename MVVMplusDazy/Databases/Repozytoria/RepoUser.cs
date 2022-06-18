@@ -76,5 +76,20 @@ namespace MVVMplusDazy.Databases.Repozytoria
             }
             return stan;
         }
+
+        public static bool EdytujKlientaWBazie(int? id, string login, string password, string mail, string phone)
+        {
+            bool stan = false;
+            using (var connection = DBConnection.Instance.Connection)
+            {
+                string EDYTUJ_Usera = $"UPDATE klient SET login='{login}', password='{password}', mail='{mail}', telefon='{phone}' WHERE id={id}";
+                MySqlCommand command = new MySqlCommand(EDYTUJ_Usera, connection);
+                connection.Open();
+                var n = command.ExecuteNonQuery();
+                if (n == 1) stan = true;
+                connection.Close();
+            }
+            return stan;
+        }
     }
 }

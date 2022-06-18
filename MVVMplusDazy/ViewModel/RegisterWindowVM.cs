@@ -74,7 +74,10 @@ namespace MVVMplusDazy.ViewModel
             {
                 ClearAll();
                 MessageBox.Show("User dodany");
+                return;
             }
+            ClearAll();
+            MessageBox.Show("Cos poszlo nie tak");
         }
         public bool CheckData()
         {
