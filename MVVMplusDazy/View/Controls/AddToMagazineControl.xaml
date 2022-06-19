@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MVVMplusDazy.View"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="600" Background="White">
+             d:DesignHeight="405" d:DesignWidth="600" Background="White">
     <Grid>
         <ListBox BorderBrush="Black" Margin="15,0,0,0" 
                  Width="175" Height="300" VerticalAlignment="Center" HorizontalAlignment="Left"

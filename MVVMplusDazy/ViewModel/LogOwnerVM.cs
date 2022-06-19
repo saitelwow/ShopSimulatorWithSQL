@@ -12,6 +12,9 @@ namespace MVVMplusDazy.ViewModel
     using View;
     using Databases.Encje;
     using Databases.Repozytoria;
+    using System.Globalization;
+    using System.Threading;
+
     class LogOwnerVM : BaseVM
     {
         #region Atrybuty
@@ -26,6 +29,31 @@ namespace MVVMplusDazy.ViewModel
         private string _canAdd = "True";
         private ObservableCollection<string> _listOfNamesAndQuantities = new ObservableCollection<string>();
         private string _selecNameAndQua = string.Empty;
+
+        private string _actualLogin = string.Empty;
+        private string _actualPhone = string.Empty;
+        private string _actualMail = string.Empty;
+
+        private string _magazineVisible = "Visible";
+        private string _listVisible = "Hidden";
+        private string _addItemVisible = "Hidden";
+        private string _delItemVisible = "Hidden";
+        private string _addShopVisible = "Hidden";
+        private string _delShopVisible = "Hidden";
+
+        private ObservableCollection<string> _listOfUsers = new ObservableCollection<string>();
+        private string _selectedUser = string.Empty;
+        private ObservableCollection<string> _listOfOrders = new ObservableCollection<string>();
+        private string _selectedOrder = string.Empty;
+        private ObservableCollection<string> _listOfDetails = new ObservableCollection<string>();
+        private string _selectedDetails = string.Empty;
+        private string _price = string.Empty;
+
+        private string _addNameOf = string.Empty;
+        private string _addPrice = string.Empty;
+        private string _addCountryFrom = string.Empty;
+        private string _addType = string.Empty;
+        private string _canAddItem = "True";
         #endregion
 
         #region GetSet
@@ -33,42 +61,40 @@ namespace MVVMplusDazy.ViewModel
         public string IsVisible { get { return isVisible; } set { isVisible = value; OnPropertyChanged(nameof(IsVisible)); } }
         public string Login { get { return _login; } set { _login = value; OnPropertyChanged(nameof(Login)); } }
         public string Password { get { return _password; } set { _password = value; OnPropertyChanged(nameof(Password)); } }
-        public ObservableCollection<Product> ListOfProducts {
-            get { return _listOfProducts; }
-            set { _listOfProducts = value; OnPropertyChanged(nameof(ListOfProducts)); }
-        }
-        public ObservableCollection<Shop> ListOfShops {
-            get { return _listOfShops; }
-            set { _listOfShops = value; OnPropertyChanged(nameof(ListOfShops)); }
-        }
-        public Product SelectedProduct
-        {
-            get { return _selectedProduct; }
-            set { _selectedProduct = value; OnPropertyChanged(nameof(SelectedProduct)); }
-        }
-        public Shop SelectedShop
-        {
-            get { return _selectedShop; }
-            set { _selectedShop = value; OnPropertyChanged(nameof(SelectedShop)); }
-        }
+        public ObservableCollection<Product> ListOfProducts { get { return _listOfProducts; } set { _listOfProducts = value; OnPropertyChanged(nameof(ListOfProducts)); } }
+        public ObservableCollection<Shop> ListOfShops { get { return _listOfShops; } set { _listOfShops = value; OnPropertyChanged(nameof(ListOfShops)); } }
+        public Product SelectedProduct { get { return _selectedProduct; } set { _selectedProduct = value; OnPropertyChanged(nameof(SelectedProduct)); } }
+        public Shop SelectedShop { get { return _selectedShop; } set { _selectedShop = value; OnPropertyChanged(nameof(SelectedShop)); } }
         public User USR { get; set; } = new User();
         public int ActualShopId { get; set; }
         public int ActualProductId { get; set; }
-        public string CanAdd
-        {
-            get { return _canAdd; }
-            set { _canAdd = value; OnPropertyChanged(nameof(CanAdd)); }
-        }
-        public ObservableCollection<string> ListOfNamesAndQuantities
-        {
-            get { return _listOfNamesAndQuantities; }
-            set { _listOfNamesAndQuantities = value; OnPropertyChanged(nameof(ListOfNamesAndQuantities)); }
-        }
-        public string SelecNameAndQua
-        {
-            get { return _selecNameAndQua; }
-            set { _selecNameAndQua = value; OnPropertyChanged(nameof(SelecNameAndQua)); }
-        }
+        public string CanAdd { get { return _canAdd; } set { _canAdd = value; OnPropertyChanged(nameof(CanAdd)); } }
+        public ObservableCollection<string> ListOfNamesAndQuantities { get { return _listOfNamesAndQuantities; } set { _listOfNamesAndQuantities = value; OnPropertyChanged(nameof(ListOfNamesAndQuantities)); } }
+        public string SelecNameAndQua { get { return _selecNameAndQua; } set { _selecNameAndQua = value; OnPropertyChanged(nameof(SelecNameAndQua)); } }
+        public string ActualLogin { get { return _actualLogin; } set { _actualLogin = value; OnPropertyChanged(nameof(ActualLogin)); } }
+        public string ActualPhone { get { return _actualPhone; } set { _actualPhone = value; OnPropertyChanged(nameof(ActualPhone)); } }
+        public string ActualMail { get { return _actualMail; } set { _actualMail = value; OnPropertyChanged(nameof(ActualMail)); } }
+
+        public string MagazineVisible { get { return _magazineVisible; } set { _magazineVisible = value; OnPropertyChanged(nameof(MagazineVisible)); } }
+        public string ListVisible { get { return _listVisible; } set { _listVisible = value; OnPropertyChanged(nameof(ListVisible)); } }
+        public string AddItemVisible { get { return _addItemVisible; } set { _addItemVisible = value; OnPropertyChanged(nameof(AddItemVisible)); } }
+        public string DelItemVisible { get { return _delItemVisible; } set { _delItemVisible = value; OnPropertyChanged(nameof(DelItemVisible)); } }
+        public string AddShopVisible { get { return _addShopVisible; } set { _addShopVisible = value; OnPropertyChanged(nameof(AddShopVisible)); } }
+        public string DelShopVisible { get { return _delShopVisible; } set { _delShopVisible = value; OnPropertyChanged(nameof(DelShopVisible)); } }
+
+        public ObservableCollection<string> ListOfUsers { get { return _listOfUsers; } set { _listOfUsers = value; OnPropertyChanged(nameof(ListOfUsers)); } }
+        public string SelectedUser { get { return _selectedUser; } set { _selectedUser = value; OnPropertyChanged(nameof(SelectedUser)); } }
+        public ObservableCollection<string> ListOfOrders { get { return _listOfOrders; } set { _listOfOrders = value; OnPropertyChanged(nameof(ListOfOrders)); } }
+        public string SelectedOrder { get { return _selectedOrder; } set { _selectedOrder = value; OnPropertyChanged(nameof(SelectedOrder)); } }
+        public ObservableCollection<string> ListOfDetails { get { return _listOfDetails; } set { _listOfDetails = value; OnPropertyChanged(nameof(ListOfDetails)); } }
+        public string SelectedDetails { get { return _selectedDetails; } set { _selectedDetails = value; OnPropertyChanged(nameof(SelectedDetails)); } }
+        public string Price { get { return _price; } set { _price = value; OnPropertyChanged(nameof(Price)); } }
+
+        public string AddNameOf { get { return _addNameOf; } set { _addNameOf = value; OnPropertyChanged(nameof(AddNameOf)); } }
+        public string AddPrice { get { return _addPrice; } set { _addPrice = value; OnPropertyChanged(nameof(AddPrice)); } }
+        public string AddCountryFrom { get { return _addCountryFrom; } set { _addCountryFrom = value; OnPropertyChanged(nameof(AddCountryFrom)); } }
+        public string AddType { get { return _addType; } set { _addType = value; OnPropertyChanged(nameof(AddType)); } }
+        public string CanAddItem { get { return _canAddItem; } set { _canAddItem = value; OnPropertyChanged(nameof(CanAddItem)); } }
         #endregion
 
         #region VMy i Windows
@@ -107,6 +133,9 @@ namespace MVVMplusDazy.ViewModel
                 return;
             }
             Load();
+            ActualLogin = USR.Login;
+            ActualMail = USR.MailAddress;
+            ActualPhone = USR.PhoneNumber;
             OW = new OwnerWindow();
             OW.DataContext = this;
             OW.Show();
@@ -117,16 +146,88 @@ namespace MVVMplusDazy.ViewModel
             ClearAll();
             SWVM.IsVisible = "Visible";
             IsVisible = "Hidden";
+            if(OW != null)
+                OW.Close();
         }
         #endregion
 
-        #region Metody Okna
+        #region MetodyOkna - otwieranie zakladek
+        public void GoToListClick(object sender)
+        {
+            ListVisible = "Visible";
+            MagazineVisible = "Hidden";
+            AddItemVisible = "Hidden";
+            DelItemVisible = "Hidden";
+            AddShopVisible = "Hidden";
+            DelShopVisible = "Hidden";
+            LoadListOfUsers();
+        }
+        public void GoToMagazineClick(object sender)
+        {
+            ListVisible = "Hidden";
+            MagazineVisible = "Visible";
+            AddItemVisible = "Hidden";
+            DelItemVisible = "Hidden";
+            AddShopVisible = "Hidden";
+            DelShopVisible = "Hidden";
+            LoadShops();
+            Load();
+        }
+        public void GoToAddItemClick(object sender)
+        {
+            ListVisible = "Hidden";
+            MagazineVisible = "Hidden";
+            AddItemVisible = "Visible";
+            DelItemVisible = "Hidden";
+            AddShopVisible = "Hidden";
+            DelShopVisible = "Hidden";
+            ClearAddData();
+            CanAddItem = "True";
+        }
+        public void GoToDelItemClick(object sender)
+        {
+            return;
+            ListVisible = "Hidden";
+            MagazineVisible = "Hidden";
+            AddItemVisible = "Hidden";
+            DelItemVisible = "Visible";
+            AddShopVisible = "Hidden";
+            DelShopVisible = "Hidden";
+        }
+        public void GoToDelShopClick(object sender)
+        {
+            return;
+            ListVisible = "Hidden";
+            MagazineVisible = "Hidden";
+            AddItemVisible = "Hidden";
+            DelItemVisible = "Hidden";
+            AddShopVisible = "Hidden";
+            DelShopVisible = "Visible";
+        }
+        public void GoToAddShopClick(object sender)
+        {
+            return;
+            ListVisible = "Hidden";
+            MagazineVisible = "Hidden";
+            AddItemVisible = "Hidden";
+            DelItemVisible = "Hidden";
+            AddShopVisible = "Visible";
+            DelShopVisible = "Hidden";
+        }
+        #endregion
+
+        #region Metody OknaUzupelniania
+        public void LoadShops()
+        {
+            ListOfShops.Clear();
+            ListOfShops = new ObservableCollection<Shop>(MM.ListOfShops);
+            SelectedShop = ListOfShops.ElementAt(0);
+        }
         public void Load()
         {
             if (SelectedShop == null) return;
             ListOfNamesAndQuantities.Clear();
-            string command = $"WHERE id_sklepu = {SelectedShop.Id}";
-            ObservableCollection<IsProduct> temp = MM.OddajIsProductZKomenda(command);
+            ObservableCollection<IsProduct> temp = MM.OddajIsProductPoIdSklepu(SelectedShop.Id);
             int i = 0;
             foreach (IsProduct ip in temp)
             {
@@ -154,25 +255,109 @@ namespace MVVMplusDazy.ViewModel
             Quantity = string.Empty;
             CanAdd = "False";
             Load();
-            //ReloadProducts(true);         //reload listy po uzupelnieniu
-            //do smth
         }
         public void ChangeShop(object sender)
         {
             if(SelectedShop == null) return;          
-            //ActualShopId = SelectedShop.Id;            
-            //List<IsProduct> temp = new List<IsProduct>();
             CanAdd = "True";
             Load();
-            //MessageBox.Show(temp.ElementAt(1).Quantity.ToString());
-            //MessageBox.Show("ReloadProducts");
-            //ListOfProducts = SelectedShop.ShopProducts;
-            //MessageBox.Show(SelectedShop.Id.ToString());
-
-            //CHANGE jest_produkt SET ilosc = {wartosc} WHERE id_sklepu = selectedshop.id and id_produktu = selectedproduct.td
-
-            //SelectedShop = null;
+        }
+        public void ChangeItem(object sender)
+        {
+            if (SelecNameAndQua == null) return;
+            CanAdd = "True";
         }
         #endregion
+
+        #region Metody OknaLista
+        public void LoadListOfUsers()
+        {
+            ListOfUsers.Clear(); SelectedUser = null;
+            ListOfOrders.Clear(); SelectedOrder = null;
+            ListOfDetails.Clear(); SelectedDetails = null;
+            Price = string.Empty;
+            foreach(User usr in MM.ListOfUsers)
+            {
+                if (usr.Id == 1) continue;
+                ListOfUsers.Add(usr.Login);
+            }
+        }
+        public void LoadOrdersOfUser(object sender)
+        {
+            if (SelectedUser == null) return;
+            ListOfOrders.Clear(); SelectedOrder = null;
+            ListOfDetails.Clear(); SelectedDetails = null;
+            Price = string.Empty;
+            User tempUser = MM.OddajUseraPoLoginie(SelectedUser);
+            ObservableCollection<Shopping> temp = MM.OddajUnikalneZakupyKlienta(tempUser.Id);
+            for (int i = 0; i < temp.Count; i++)
+            {
+                ListOfOrders.Add($"Transakcja nr: {temp[i].Id_T}");
+            }
+        }
+        public void LoadOrderDetails(object sender)
+        {
+            if(SelectedOrder == null) return;
+            ListOfDetails.Clear(); SelectedDetails = null;
+            Price = string.Empty;
+            User tempUser = MM.OddajUseraPoLoginie(SelectedUser);
+            int transacitonId = Convert.ToInt32(SelectedOrder.Split(' ')[2]);
+            ObservableCollection<Shopping> temp = MM.OddajZakupyPoIdTransakcji(transacitonId, tempUser.Id);
+            ObservableCollection<Product> tempProducts = MM.ListOfProducts;
+            double res = 0;
+            foreach (Shopping sh in temp)
+            {
+                foreach (Product pr in tempProducts)
+                {
+                    if (pr.Id == sh.Id_P)
+                    {
+                        ListOfDetails.Add($"{pr.Name}: {sh.Quantity}");
+                        res += (pr.Price * sh.Quantity);
+                    }
+                }
+            }
+            res = Math.Round(res, 5);
+            Price = res.ToString();
+        }
+        #endregion
+
+        #region Metody OknaDodawaniaItem
+        public void AddItemClick(object sender)
+        {
+            if (!CheckAddData()) return;
+
+
+            CanAddItem = "False";
+        }
+
+        public void ClearAddData()
+        {
+            AddNameOf = String.Empty; AddPrice = String.Empty; AddCountryFrom = string.Empty; AddType = String.Empty;
+        }
+        public bool CheckAddData()
+        {
+            AddNameOf = AddNameOf.Trim(); AddPrice = AddPrice.Trim(); AddCountryFrom = AddCountryFrom.Trim(); AddType = AddType.Trim();
+            if(AddNameOf == "" | AddPrice == "" | AddCountryFrom == "" | AddType == "") { MessageBox.Show("Uzupelnij pola"); return false; }
+            if (AddNameOf.Length > 40) return false;
+            if (AddCountryFrom.Length > 40) return false;
+            if (AddType.Length > 40) return false;
+            if(Convert.ToInt32(AddPrice) <= 0 ) { MessageBox.Show("Cena musi byc dodatnia"); return false; }
+            return true;
+        }
+        #endregion
+
+        #region Metody OknaUsuwaniaItem
+
+        #endregion
+
+        #region Metody OknaDodawaniaSklep
+
+        #endregion
+
+        #region Metody OknaUsuwaniaShop
+
+        #endregion
+
+        
     }
 }

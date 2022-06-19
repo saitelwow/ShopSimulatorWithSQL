@@ -18,32 +18,58 @@
             <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
         <Label Content="Właściciel" HorizontalAlignment="Left" Margin="25,25,0,0" VerticalAlignment="Top" FontSize="40"/>
-        <Label Content="Login:" HorizontalAlignment="Left" Margin="25,100,0,0" VerticalAlignment="Top" FontSize="10"/>
-        <Label Content="Hasło:" HorizontalAlignment="Left" Margin="25,140,0,0" VerticalAlignment="Top" FontSize="10"/>
-        <Label Content="Telefon:" HorizontalAlignment="Left" Margin="25,180,0,0" VerticalAlignment="Top" FontSize="10"/>
-        <Label Content="Mail:" HorizontalAlignment="Left" Margin="25,220,0,0" VerticalAlignment="Top" FontSize="10"/>
-        <TextBlock HorizontalAlignment="Left" Margin="75,100,0,0" TextWrapping="Wrap" 
-                   Text="{Binding USR.Login}" VerticalAlignment="Top" FontSize="15" Width="125" Background="LightGray"/>
-        <TextBlock HorizontalAlignment="Left" Margin="75,140,0,0" TextWrapping="Wrap" 
-                   Text="{Binding USR.Password}" VerticalAlignment="Top" FontSize="15" Width="125" Background="LightGray"/>
-        <TextBlock HorizontalAlignment="Left" Margin="75,180,0,0" TextWrapping="Wrap" 
-                   Text="{Binding USR.PhoneNumber}" VerticalAlignment="Top" FontSize="15" Width="125" Background="LightGray"/>
-        <TextBlock HorizontalAlignment="Left" Margin="75,220,0,0" TextWrapping="Wrap" 
-                   Text="{Binding USR.MailAddress}" VerticalAlignment="Top" FontSize="15" Width="125" Background="LightGray"/>
+        <Grid Grid.Column="0">
+            <local:UserInfoControl Margin="0,100,0,0"
+                                   Login="{Binding ActualLogin, Mode=TwoWay}"
+                                   Phone="{Binding ActualPhone, Mode=TwoWay}"
+                                   Mail="{Binding ActualMail, Mode=TwoWay}">
+            </local:UserInfoControl>
+        </Grid>
         <Grid Grid.Column="1">
+            <local:OwnerClickControl 
+                GoToMagazCl="{Binding MVM.GoToMagazClickOwner}" GoToListCl="{Binding MVM.GoToListClickOwner}"
+                                     GoToAddItemCl="{Binding MVM.GoToAddItemClickOwner}" GoToDelItemCl="{Binding MVM.GoToDelItemClickOwner}"
+                                     GoToAddShopCl="{Binding MVM.GoToAddShopClickOwner}" GoToDelShopCl="{Binding MVM.GoToDelShopClickOwner}">
+            </local:OwnerClickControl>
+        </Grid>
+        <Grid Grid.Column="1" Margin="0,45,0,0" Visibility="{Binding MagazineVisible, Mode=TwoWay}">
             <local:AddToMagazineControl
                                     Shops="{Binding ListOfShops, Mode=TwoWay}" SelectedShop="{Binding SelectedShop, Mode=TwoWay}"
                                     Products="{Binding ListOfNamesAndQuantities, Mode=TwoWay}" SelectedProduct="{Binding SelecNameAndQua, Mode=TwoWay}"
                                     QuantityText="{Binding Quantity, Mode=TwoWay}" AddCl="{Binding MVM.AddToMagazineClick}" 
-                                    CanAdd="{Binding CanAdd}"
-                                    >
+                                    CanAdd="{Binding CanAdd}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="ShopChanged">
                         <i:InvokeCommandAction Command="{Binding MVM.SelectedShopChanged}"/>
                     </i:EventTrigger>
+                    <i:EventTrigger EventName="ProductChanged">
+                        <i:InvokeCommandAction Command="{Binding MVM.SelectedProductAndQuantityChanged}"/>
+                    </i:EventTrigger>
                 </i:Interaction.Triggers>
             </local:AddToMagazineControl>
         </Grid>
-        
+        <Grid Grid.Column="1" Margin="0,45,0,0" Visibility="{Binding ListVisible, Mode=TwoWay}">
+            <local:ListOwnerControl Users="{Binding ListOfUsers, Mode=TwoWay}" SelectedUser="{Binding SelectedUser, Mode=TwoWay}"
+                                    Orders="{Binding ListOfOrders, Mode=TwoWay}" SelectedOrder="{Binding SelectedOrder, Mode=TwoWay}"
+                                    OrderDetails="{Binding ListOfDetails, Mode=TwoWay}" SelectedOrderDetails="{Binding SelectedDetails, Mode=TwoWay}"
+                                    Price="{Binding Price, Mode=TwoWay}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="UserChanged">
+                        <i:InvokeCommandAction Command="{Binding MVM.LoadOrdersOfUser}"/>
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="OrderChanged">
+                        <i:InvokeCommandAction Command="{Binding MVM.LoadOrderDetails}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </local:ListOwnerControl>
+        </Grid>
+        <Grid Grid.Column="1" Margin="0,45,0,0" Visibility="{Binding AddItemVisible, Mode=TwoWay}">
+            <local:OwnerAddItemControl AddCl="{Binding MVM.AddItemClickOwner}"
+                                       NameOf="{Binding AddNameOf, Mode=TwoWay}" Price="{Binding AddPrice, Mode=TwoWay}"
+                                       CountryFrom="{Binding AddCountryFrom, Mode=TwoWay}" Type="{Binding AddType, Mode=TwoWay}"
+                                       CanAdd="{Binding CanAddItem, Mode=TwoWay}">
+                
+            </local:OwnerAddItemControl>
+        </Grid>
     </Grid>
 </Window>

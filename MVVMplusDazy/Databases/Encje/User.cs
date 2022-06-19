@@ -44,5 +44,9 @@ namespace MVVMplusDazy.Databases.Encje
         {
             return $"('{Login}', '{Password}', {PhoneNumber},'{MailAddress}')";
         }
+        public override string ToString()
+        {
+            return $"{Id}, {Login}, {Password}, {PhoneNumber}, {MailAddress}";
+        }
     }
 }

@@ -66,10 +66,10 @@ namespace MVVMplusDazy.ViewModel
         }
         public void Register(object sender)
         {
-            if (!CheckData()) 
+            User user = new User(Login, Password, PhoneNumber, MailAddress);
+            if (!CheckData(user, RepeatedPassword)) 
                  return;             
             CanRegister = "False";
-            var user = new User(Login, Password, PhoneNumber, MailAddress);
             if(MM.DodajUseraDoBazy(user))
             {
                 ClearAll();
@@ -79,23 +79,26 @@ namespace MVVMplusDazy.ViewModel
             ClearAll();
             MessageBox.Show("Cos poszlo nie tak");
         }
-        public bool CheckData()
+        public bool CheckData(User user, string repeatedpassword)
         {
             string mailPattern = @"^(?!\.)(""([^""\r\\]|\\[""\r\\])*""|"
                             + @"([-a-z0-9!#$%&'*+/=?^_`{|}~]|(?<!\.)\.)*)(?<!\.)"
                             + @"@[a-z0-9][\w\.-]*[a-z0-9]\.[a-z][a-z\.]*[a-z]$";
-            Login = Login.Trim(); PhoneNumber = PhoneNumber.Trim(); MailAddress = MailAddress.Trim(); MailAddress = MailAddress.ToLower();
-            if (Login == "" | Password == "" | RepeatedPassword == "" | PhoneNumber == "" | MailAddress == "")
+            user.Login = user.Login.Trim(); user.PhoneNumber = user.PhoneNumber.Trim(); 
+            user.MailAddress = user.MailAddress.Trim(); user.MailAddress = user.MailAddress.ToLower();
+            if (user.Login == "" | user.Password == "" | repeatedpassword == "" | user.PhoneNumber == "" | user.MailAddress == "")
                 { MessageBox.Show("Uzupełnij wszystkie pola"); return false; }
-            if (Login.Length > 10) 
+            if (user.Login.Length > 15) 
                 { MessageBox.Show("Zły Login"); return false; }
-            if (Password.Length > 10 || Password == "") 
+            if (user.Password.Length > 20 || user.Password == "") 
                 { MessageBox.Show("Złe hasło"); return false; }
-            if ((!String.Equals(Password, RepeatedPassword)) || (Password == "" & RepeatedPassword == "")) 
+            if ((!String.Equals(user.Password, repeatedpassword)) || (user.Password == "" & repeatedpassword == "")) 
                 { MessageBox.Show("Rozne Hasla"); return false; }
-            if (!(Regex.Match(PhoneNumber, @"(?<!\w)(\(?(\+|00)?48\)?)?[ -]?\d{3}[ -]?\d{3}[ -]?\d{3}(?!\w)").Success))
+            if (user.PhoneNumber.Length > 15) return false;
+            if (!(Regex.Match(user.PhoneNumber, @"(?<!\w)(\(?(\+|00)?48\)?)?[ -]?\d{3}[ -]?\d{3}[ -]?\d{3}(?!\w)").Success))
                 { MessageBox.Show("Zły numer"); return false; }
-            if (!(Regex.Match(MailAddress, mailPattern).Success)) 
+            if (user.MailAddress.Length > 40) return false;
+            if (!(Regex.Match(user.MailAddress, mailPattern).Success)) 
                 { MessageBox.Show("Zły mail"); return false; }
             return true;
         }

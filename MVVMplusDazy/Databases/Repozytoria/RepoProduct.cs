@@ -12,7 +12,7 @@ namespace MVVMplusDazy.Databases.Repozytoria
     {
         #region Zapytania
         private const string WSZYSTKIE_PRODUKTY = "SELECT * FROM produkty";
-        private const string DODAJ_PRODUKT = "INSERT INTO 'produkty'('nazwa', 'rodzaj', 'kraj', 'cena') VALUES ";
+        private const string DODAJ_PRODUKT = "INSERT INTO produkty(`cena`, `kraj`, `nazwa`, `rodzaj`) VALUES ";
         #endregion
 
         #region Metody CRUD - create, read, update, delete

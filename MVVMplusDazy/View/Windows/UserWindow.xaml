@@ -18,19 +18,21 @@
             <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
         <Label Content="Użytkownik" HorizontalAlignment="Left" Margin="25,25,0,0" VerticalAlignment="Top" FontSize="40"/>
-        <Label Content="Login:" HorizontalAlignment="Left" Margin="25,100,0,0" VerticalAlignment="Top" FontSize="10"/>
-        <Label Content="Hasło:" HorizontalAlignment="Left" Margin="25,140,0,0" VerticalAlignment="Top" FontSize="10"/>
-        <Label Content="Telefon:" HorizontalAlignment="Left" Margin="25,180,0,0" VerticalAlignment="Top" FontSize="10"/>
-        <Label Content="Mail:" HorizontalAlignment="Left" Margin="25,220,0,0" VerticalAlignment="Top" FontSize="10"/>
-        <TextBlock HorizontalAlignment="Left" Margin="75,100,0,0" TextWrapping="Wrap" 
-                   Text="{Binding ActUSR.Login}" VerticalAlignment="Top" FontSize="15" Width="125" Background="LightGray"/>
-        <TextBlock HorizontalAlignment="Left" Margin="75,140,0,0" TextWrapping="Wrap" 
-                   Text="{Binding ActUSR.Password}" VerticalAlignment="Top" FontSize="15" Width="125" Background="LightGray"/>
-        <TextBlock HorizontalAlignment="Left" Margin="75,180,0,0" TextWrapping="Wrap" 
-                   Text="{Binding ActUSR.PhoneNumber}" VerticalAlignment="Top" FontSize="15" Width="125" Background="LightGray"/>
-        <TextBlock HorizontalAlignment="Left" Margin="75,220,0,0" TextWrapping="Wrap" 
-                   Text="{Binding ActUSR.MailAddress}" VerticalAlignment="Top" FontSize="15" Width="125" Background="LightGray"/>
-        <local:GoShoppingControl Grid.Column="1" 
+        <Grid Grid.Column="0">
+            <local:UserInfoControl Margin="0,100,0,0"
+                                   Login="{Binding ActualLogin, Mode=TwoWay}"
+                                   Phone="{Binding ActualPhone, Mode=TwoWay}"
+                                   Mail="{Binding ActualMail, Mode=TwoWay}">
+            </local:UserInfoControl>
+        </Grid>
+        <Grid Grid.Column="1" Visibility="Visible">
+            <local:UserClickControl GoToListCl="{Binding MVM.GoToListClickUser}" GoToShoppingCl="{Binding MVM.GoToShoppingClickUser}"
+                                    GoToEditCl="{Binding MVM.GoToEditClickUser}">
+                
+            </local:UserClickControl>
+        </Grid>
+        <Grid Grid.Column="1" Margin="0,45,0,0" Visibility="{Binding ShoppingVisible, Mode=TwoWay}">
+            <local:GoShoppingControl Grid.Column="1" 
                                  AddCl="{Binding MVM.AddClick}" 
                                  InfoCl="{Binding MVM.InfoClick}"
                                  DelCl="{Binding MVM.DelClick}" 
@@ -41,12 +43,39 @@
                                  SelectedProductToBuy="{Binding SelectedStrProductToBuy, Mode=TwoWay}"
                                  QuantityCombobox="{Binding QuantityOfProduct, Mode=TwoWay}"
                                  SelectedQuantity="{Binding SelectedQuantity, Mode=TwoWay}">
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="ProdutcInShopChanged">
-                    <i:InvokeCommandAction Command="{Binding MVM.SelectedProductChanged}"/>
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
-        </local:GoShoppingControl>
-        
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="ProdutcInShopChanged">
+                        <i:InvokeCommandAction Command="{Binding MVM.SelectedProductChanged}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </local:GoShoppingControl>
+        </Grid>
+        <Grid Grid.Column="1" Margin="0,45,0,0" Visibility="{Binding TransactionsVisible, Mode=TwoWay}">
+            <local:GoToListControl 
+                ListOfTransactions="{Binding ListOfTransactions, Mode=TwoWay}"
+                                   SelectedTransaction="{Binding SelectedTransaction, Mode=TwoWay}"
+                                   ListOfProducts="{Binding ListOfInfo,Mode=TwoWay}"
+                                   Price="{Binding Price, Mode=TwoWay}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectedTransactionChanged">
+                        <i:InvokeCommandAction Command="{Binding MVM.LoadTransaction}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </local:GoToListControl>
+                
+        </Grid>
+        <Grid Grid.Column="1" Margin="0,45,0,0" Visibility="{Binding EditVisible, Mode=TwoWay}">
+            <local:EditUserControl 
+                                   Login="{Binding ActUSR.Login, Mode=TwoWay}"
+                                   EditCl="{Binding MVM.EditClick}"
+                                   Password="{Binding EditPassword, Mode=TwoWay}"
+                                   RepeatedPassword="{Binding EditRepeatedPassword, Mode=TwoWay}"
+                                   PhoneNumber="{Binding EditPhoneNumber, Mode=TwoWay}"
+                                   MailAddress="{Binding EditMailAddress, Mode=TwoWay}"
+                                   CanEdit="{Binding CanEdit, Mode=TwoWay}">
+                
+            </local:EditUserControl>
+        </Grid>
+
     </Grid>
 </Window>

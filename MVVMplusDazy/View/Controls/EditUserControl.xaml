@@ -1,0 +1,43 @@
+﻿<UserControl x:Class="MVVMplusDazy.View.EditUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:com="clr-namespace:MVVMplusDazy.Components"
+             xmlns:local="clr-namespace:MVVMplusDazy.View"
+             mc:Ignorable="d" 
+             d:DesignHeight="405" d:DesignWidth="600" Background="White">
+    <Grid>
+
+        <TextBox IsEnabled="False" BorderBrush="Black" HorizontalAlignment="Center" Margin="0,120,0,0" TextWrapping="Wrap" VerticalAlignment="Top" 
+                 Width="150" Height="30" FontSize="20" Text="{Binding Login, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, 
+            RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"/>
+        <Label Content="Login: " HorizontalAlignment="Center" Margin="-200,120,0,0" VerticalAlignment="Top" FontSize="15" Width="75"/>
+
+        <com:BindablePasswordBox HorizontalAlignment="Center" Margin="0,155,0,0" VerticalAlignment="Top" 
+                 Width="150" Height="30" FontSize="20" Password="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, 
+            RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"               
+                 />
+        <Label Content="Hasło: " HorizontalAlignment="Center" Margin="-200,155,0,0" VerticalAlignment="Top" FontSize="15" Width="75"/>
+
+        <com:BindablePasswordBox BorderBrush="Black" HorizontalAlignment="Center" Margin="0,190,0,0" VerticalAlignment="Top" 
+                 Width="150" Height="30" FontSize="20" Password="{Binding RepeatedPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, 
+            RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"/>
+        <Label Content="Powtórz: " HorizontalAlignment="Center" Margin="-200,190,0,0" VerticalAlignment="Top" FontSize="15" Width="75"/>
+
+        <TextBox BorderBrush="Black" HorizontalAlignment="Center" Margin="0,225,0,0" TextWrapping="Wrap" VerticalAlignment="Top" 
+                 Width="150" Height="30" FontSize="20" Text="{Binding PhoneNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, 
+            RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"/>
+        <Label Content="Telefon: " HorizontalAlignment="Center" Margin="-200,225,0,0" VerticalAlignment="Top" FontSize="15" Width="75"/>
+
+        <TextBox BorderBrush="Black" HorizontalAlignment="Center" Margin="0,260,0,0" TextWrapping="Wrap" VerticalAlignment="Top" 
+                 Width="150" Height="30" FontSize="20" Text="{Binding MailAddress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, 
+            RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"/>
+        <Label Content="Mail: " HorizontalAlignment="Center" Margin="-200,260,0,0" VerticalAlignment="Top" FontSize="15" Width="75"/>
+        <Button Content="Edytuj" HorizontalAlignment="Center" Margin="0,300,0,0" VerticalAlignment="Top" Height="40" Width="100" FontSize="20"
+                IsEnabled="{Binding CanEdit, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, 
+            RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" 
+                Command="{Binding EditCl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, 
+            RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"/>
+    </Grid>
+</UserControl>

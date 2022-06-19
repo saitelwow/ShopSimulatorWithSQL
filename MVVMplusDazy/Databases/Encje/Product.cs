@@ -51,7 +51,7 @@ namespace MVVMplusDazy.Databases.Encje
         }
         public string ToInsert()
         {
-            return $"('{Name}', '{Type}','{CountryFrom}', '{Price}')";
+            return $"('{Price}','{CountryFrom}', '{Name}', '{Type}')";
         }
         //aby sprawdzić czy istnieje taki product w naszym zbiorze
         public override bool Equals(object obj)

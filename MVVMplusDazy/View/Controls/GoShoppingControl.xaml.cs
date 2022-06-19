@@ -39,6 +39,7 @@ namespace MVVMplusDazy.View
         public static readonly DependencyProperty BuyClProperty = DependencyProperty.Register(
             "BuyCl", typeof(ICommand), typeof(GoShoppingControl), new FrameworkPropertyMetadata(null)
             );
+
         public static readonly DependencyProperty ProductsInShopProperty = DependencyProperty.Register(
             "ProductsInShop", typeof(ObservableCollection<Product>), typeof(GoShoppingControl), new FrameworkPropertyMetadata(null)
             );
@@ -80,6 +81,7 @@ namespace MVVMplusDazy.View
             get { return (ICommand)GetValue(BuyClProperty); }
             set { SetValue(BuyClProperty, value); }
         }
+
         public ObservableCollection<Product> ProductsInShop
         {
             get { return (ObservableCollection<Product>)GetValue(ProductsInShopProperty); }
@@ -165,6 +167,8 @@ namespace MVVMplusDazy.View
             RoutedEventArgs args = new RoutedEventArgs(BuyClickEvent);
             RaiseEvent(args);
         }
+        
+        
         #endregion
 
         #region EventyListBox

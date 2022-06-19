@@ -1,0 +1,29 @@
+﻿<UserControl x:Class="MVVMplusDazy.View.OwnerClickControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MVVMplusDazy.View"
+             mc:Ignorable="d" 
+             d:DesignHeight="45" d:DesignWidth="600" Background="White">
+    <Grid>
+        <Button Content="Magaz" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,10,0,0" Width="50" Height="25"
+                Command="{Binding GoToMagazCl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, 
+            RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"/>
+        <Button Content="Lista" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="60,10,0,0" Width="50" Height="25"
+                Command="{Binding GoToListCl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, 
+            RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"/>
+        <Button Content="DoPrz" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="115,10,0,0" Width="50" Height="25"
+                Command="{Binding GoToAddItemCl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, 
+            RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"/>
+        <Button Content="UsPrz" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="170,10,0,0" Width="50" Height="25"
+                Command="{Binding GoToDelItemCl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, 
+            RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"/>
+        <Button Content="DoSkl" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="225,10,0,0" Width="50" Height="25"
+                Command="{Binding GoToAddShopCl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, 
+            RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"/>
+        <Button Content="UsSkl" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="280,10,0,0" Width="50" Height="25"
+                Command="{Binding GoToDelShopCl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, 
+            RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"/>
+    </Grid>
+</UserControl>

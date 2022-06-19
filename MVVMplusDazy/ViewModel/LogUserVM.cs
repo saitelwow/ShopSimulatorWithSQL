@@ -27,8 +27,24 @@ namespace MVVMplusDazy.ViewModel
         private string _selectedStrProductToBuy = null;
         private ObservableCollection<int> _quantityOfProduct = new ObservableCollection<int>();
         private int? _selectedQuantity;
-        private bool _shoppingVisibility = true;
-        private bool _transactionVisibility = false;
+
+        private string _shoppingVisible = "Visible";
+        private string _transactionsVisible = "Hidden";
+        private string _editVisible = "Hidden";
+        private string _price = string.Empty;
+        private ObservableCollection<string> _listOfTransactions = new ObservableCollection<string>();
+        private string _selectedTransaction = null;
+        private ObservableCollection<string> _listOfInfo = new ObservableCollection<string>();
+
+        private string _editPassword = string.Empty;
+        private string _editRepeatedPassword = string.Empty;
+        private string _editPhoneNumber = string.Empty;
+        private string _editMailAddress = string.Empty;
+        private string _canEdit = "True";
+
+        private string _actualLogin = string.Empty;
+        private string _actualPhone = string.Empty;
+        private string _actualMail = string.Empty;
         #endregion
 
         #region GetSet
@@ -51,14 +67,32 @@ namespace MVVMplusDazy.ViewModel
             get { return _selectedStrProductToBuy; }
             set { _selectedStrProductToBuy = value; OnPropertyChanged(nameof(SelectedStrProductToBuy)); }
         }
-        public bool ShoppingVisibility { get { return _shoppingVisibility; } set { _shoppingVisibility = value; OnPropertyChanged(nameof(ShoppingVisibility)); } }
-        public bool TransactionVisibility { get { return _transactionVisibility; } set { _transactionVisibility = value; OnPropertyChanged(nameof(TransactionVisibility)); } }
+
+        public string ShoppingVisible { get { return _shoppingVisible; } set { _shoppingVisible = value; OnPropertyChanged(nameof(ShoppingVisible)); } }
+        public string TransactionsVisible { get { return _transactionsVisible; } set { _transactionsVisible = value; OnPropertyChanged(nameof(TransactionsVisible)); } }
+        public string EditVisible { get { return _editVisible; } set { _editVisible = value; OnPropertyChanged(nameof(EditVisible)); } }
+        public string Price { get { return _price; } set { _price = value; OnPropertyChanged(nameof(Price)); } }
+        public ObservableCollection<string> ListOfTransactions { get { return _listOfTransactions; } set { _listOfTransactions = value; OnPropertyChanged(nameof(ListOfTransactions)); } }
+        public string SelectedTransaction { get { return _selectedTransaction; } set { _selectedTransaction = value; OnPropertyChanged(nameof(SelectedTransaction)); } }
+        public ObservableCollection<string> ListOfInfo { get { return _listOfInfo; } set { _listOfInfo = value; OnPropertyChanged(nameof(ListOfInfo)); } }
+        public string EditPassword { get { return _editPassword; } set { _editPassword = value; OnPropertyChanged(nameof(EditPassword)); } }
+        public string EditRepeatedPassword { get { return _editRepeatedPassword; } set { _editRepeatedPassword = value; OnPropertyChanged(nameof(EditRepeatedPassword)); } }
+        public string EditPhoneNumber { get { return _editPhoneNumber; } set { _editPhoneNumber = value; OnPropertyChanged(nameof(EditPhoneNumber)); } }
+        public string EditMailAddress { get { return _editMailAddress; } set { _editMailAddress = value; OnPropertyChanged(nameof(EditMailAddress)); } }
+        public string CanEdit { get { return _canEdit; } set { _canEdit = value; OnPropertyChanged(nameof(CanEdit)); } }
+
+        public string ActualLogin { get { return _actualLogin; } set { _actualLogin = value; OnPropertyChanged(nameof(ActualLogin)); } }
+        public string ActualPhone { get { return _actualPhone; } set { _actualPhone = value; OnPropertyChanged(nameof(ActualPhone)); } }
+        public string ActualMail { get { return _actualMail; } set { _actualMail = value; OnPropertyChanged(nameof(ActualMail)); } }
+
+
         #endregion
 
         #region VMy i Windows
         public MainVM MVM { get; set; }
-        public UserWindow US { get; set; }
+        public UserWindow US { get; set; } 
         public StartWindowVM SWVM { get; set; }
+        public RegisterWindowVM RWVM { get; set; } 
         public MainModel MM { get; set; } = new MainModel();
         #endregion
 
@@ -73,6 +107,7 @@ namespace MVVMplusDazy.ViewModel
         {
             if (Login == "admin") return false;
             testUser = MM.OddajUseraPoLoginHaslo(Login, Password);
+            if(testUser == null) return false;
             if (testUser.Login == Login && testUser.Password == Password)
             {
                 ActUSR = testUser;
@@ -87,8 +122,14 @@ namespace MVVMplusDazy.ViewModel
                 ClearAll();
                 return;
             }
-            //MessageBox.Show("Good");
             Load();
+            ShoppingVisible = "Visible";
+            EditVisible = "Hidden";
+            CanEdit = "True";
+            TransactionsVisible = "Hidden";
+            ActualLogin = ActUSR.Login;
+            ActualPhone = ActUSR.PhoneNumber;
+            ActualMail = ActUSR.MailAddress;
             US = new UserWindow();
             US.DataContext = this;
             US.Show();
@@ -99,24 +140,46 @@ namespace MVVMplusDazy.ViewModel
             ClearAll();
             SWVM.IsVisible = "Visible";
             IsVisible = "Hidden";
+            if(US != null)
+                US.Close(); 
         }
         #endregion
 
-        #region MetodyOkna
-        public void ShowTransaction(object sender)
+        #region MetodyOkna - otwieranie zakladek
+        public void GoToList(object sender)
         {
-            MessageBox.Show("ShowTransaction");
+            ListOfInfo.Clear();
+            TransactionsVisible = "Visible";
+            ShoppingVisible = "Hidden";
+            EditVisible = "Hidden";
+            CanEdit = "True";
+            LoadAllTransatcions(true);
         }
-        public void ShowShopping(object sender)
+        public void GoToShopping(object sender)
         {
-            MessageBox.Show("ShowShopping");
+            ListOfInfo.Clear();
+            //MessageBox.Show("ShowShopping"); 
+            ShoppingVisible = "Visible";
+            TransactionsVisible = "Hidden";
+            EditVisible = "Hidden";
+            CanEdit = "True";
+            Load();
+        }
+        public void GoToEditClick(object sender)
+        {
+            ListOfInfo.Clear();
+            //MessageBox.Show("EditClick");
+            ShoppingVisible = "Hidden";
+            TransactionsVisible = "Hidden";
+            EditVisible = "Visible";
+            CanEdit = "True";
         }
         #endregion
 
         #region MetodyKupowania
         private void Load()
         {
-            ListOfProductsInShop = new ObservableCollection<Product>(MM.ListOfProducts);
+            ListOfProductsInShop = MM.OddajProduktyWiecejNizZero();
             StrListOfProductsToBuy.Clear();
             SelectedStrProductToBuy = null;
             ListOfProductsToBuy.Clear();
@@ -128,8 +191,7 @@ namespace MVVMplusDazy.ViewModel
             if (SelectedProductInShop == null) return;
             QuantityOfProduct.Clear();
             SelectedQuantity = null;
-            string command = $"WHERE id_produktu = {SelectedProductInShop.Id}";
-            ObservableCollection<IsProduct> temp = MM.OddajIsProductZKomenda(command);
+            ObservableCollection<IsProduct> temp = MM.OddajIsProductPoIdProduktu(SelectedProductInShop.Id);
             int qua = 0;
             foreach(IsProduct ip in temp)
             {
@@ -138,7 +200,6 @@ namespace MVVMplusDazy.ViewModel
             for (int i = 1; i <= qua; i++)
                 QuantityOfProduct.Add(i);
             SelectedQuantity = QuantityOfProduct.ElementAt(0);
-            //SelectedProductInShop = null;
         }
         public void AddClick(object sender)
         {
@@ -153,16 +214,11 @@ namespace MVVMplusDazy.ViewModel
         }
         public void InfoClick(object sender)
         {
-            //MessageBox.Show("InfoCl");
             if (SelectedProductInShop != null && SelectedProductToBuy != null) SelectedProductToBuy = null;
             if (SelectedProductInShop != null)
             {
                 MessageBox.Show(SelectedProductInShop.GetInfo());
             }
-            //if(SelectedProductToBuy != null)
-            //{
-            //    //MessageBox.Show(SelectedProductToBuy.GetInfo());
-            //}
 
             SelectedProductInShop = null; SelectedProductToBuy = null;
         }
@@ -194,11 +250,12 @@ namespace MVVMplusDazy.ViewModel
             double overall = 0;
             foreach (Product pr in ListOfProductsToBuy)
             {
-                ObservableCollection<IsProduct> temp = MM.OddajIsProductZKomenda($"WHERE id_produktu = {pr.Id}");
+                //ObservableCollection<IsProduct> temp = MM.OddajIsProductZKomenda($"WHERE id_produktu = {pr.Id}");
+                ObservableCollection<IsProduct> temp = MM.OddajIsProductPoIdProduktu(pr.Id);
+
                 bool isGood = false;
                 res += pr.Name + ": " + (pr.Price * tableOfQuantity[i]) + "\n";
                 overall += (pr.Price * tableOfQuantity[i]);
-                //insert to zakupy {id produktu} {id user} {tableofquanity[i]} {lasttransaction + 1}
                 if(!MM.DodajDoBazyTransakcji(pr.Id, ActUSR.Id, tableOfQuantity[i], (lastTransaction + 1)))
                 {
                     MessageBox.Show("Blad"); return;
@@ -228,7 +285,71 @@ namespace MVVMplusDazy.ViewModel
         #endregion
 
         #region MetodyTransakcji
+        public void LoadAllTransatcions(object sender)
+        {
+            ListOfTransactions.Clear();
+            ObservableCollection<Shopping> temp = MM.OddajUnikalneZakupyKlienta(ActUSR.Id);
+            for(int i = 0; i < temp.Count; i++)
+            {
+                ListOfTransactions.Add($"Transakcja nr: {temp[i].Id_T}");
+            }
+        }
+        public void LoadTransactionInfo(object sender)
+        {
+            if (SelectedTransaction == null) return;
+            ListOfInfo.Clear();
+            Price = string.Empty;
+            int transacitonId = Convert.ToInt32(SelectedTransaction.Split(' ')[2]);      
+            ObservableCollection<Shopping> temp = MM.OddajZakupyPoIdTransakcji(transacitonId, ActUSR.Id);
+            ObservableCollection<Product> tempProducts = MM.ListOfProducts;
+            double res = 0;
+            foreach(Shopping sh in temp)
+            {
+                foreach(Product pr in tempProducts)
+                {
+                    if (pr.Id == sh.Id_P)
+                    {
+                        ListOfInfo.Add($"{pr.Name}: {sh.Quantity}");
+                        res += (pr.Price * sh.Quantity);
+                    }
+                }
+            }
+            res = Math.Round(res, 5);
+            Price = res.ToString();
+        }
 
+        #endregion
+
+        #region MetodyEdycji
+        public void EditClick(object sender)
+        {
+            //MessageBox.Show("EditClick");
+            User user = new User(ActUSR.Login, EditPassword, EditPhoneNumber, EditMailAddress);
+            if(!RWVM.CheckData(user, EditRepeatedPassword))
+            {
+                MessageBox.Show($"{ActUSR.Login}, {EditPassword}, {EditRepeatedPassword},{EditPhoneNumber}, {EditMailAddress}");
+                return;
+            }
+            if(MM.EdytujUseraWBazie(user, ActUSR.Id))
+            {
+                EditClearAll();
+                CanEdit = "False";
+                ActUSR = user;
+                ActualLogin = ActUSR.Login;
+                ActualPhone = ActUSR.PhoneNumber;
+                ActualMail = ActUSR.MailAddress;
+                //US.DataContext = this;
+                return;
+            }
+            EditClearAll();
+        }
+        public void EditClearAll()
+        {
+            EditPassword = string.Empty;
+            EditRepeatedPassword = string.Empty;
+            EditPhoneNumber = string.Empty;
+            EditMailAddress = string.Empty;
+        }
         #endregion
     }
 }

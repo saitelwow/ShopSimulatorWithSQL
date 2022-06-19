@@ -53,6 +53,7 @@ namespace MVVMplusDazy.ViewModel
             LO.MM = MM;
 
             LU.SWVM = SW;
+            LU.RWVM = RW;
             LU.MVM = this;
             LU.MM = MM;
         }
@@ -227,7 +228,8 @@ namespace MVVMplusDazy.ViewModel
                 }
                 return _buyClick;
             }
-        }
+        }       
+        
         private ICommand _selectedProductChanged = null;
         public ICommand SelectedProductChanged
         {
@@ -238,6 +240,38 @@ namespace MVVMplusDazy.ViewModel
                     _selectedProductChanged = new RelayCommand(LU.LoadQuantity, arg => true);
                 }
                 return _selectedProductChanged;
+            }
+        }
+        #endregion
+
+        #region ICommandy GoToListControl
+        private ICommand _loadTransaction = null;
+        public ICommand LoadTransaction
+        {
+            get
+            {
+                if (_loadTransaction == null)
+                {
+                    _loadTransaction = new RelayCommand(LU.LoadTransactionInfo, arg => true);
+                }
+                return _loadTransaction;
+            }
+        }
+        
+        #endregion
+
+        #region ICommandy EditUserControl
+        
+        private ICommand _editClick = null;
+        public ICommand EditClick
+        {
+            get
+            {
+                if (_editClick == null)
+                {
+                    _editClick = new RelayCommand(LU.EditClick, arg => true);
+                }
+                return _editClick;
             }
         }
         #endregion
@@ -267,6 +301,187 @@ namespace MVVMplusDazy.ViewModel
                 return _selectedShopChanged;
             }
         }
+        private ICommand _selectedProductAndQuantityChanged = null;
+        public ICommand SelectedProductAndQuantityChanged
+        {
+            get
+            {
+                if (_selectedProductAndQuantityChanged == null)
+                {
+                    _selectedProductAndQuantityChanged = new RelayCommand(LO.ChangeItem, arg => true);
+                }
+                return _selectedProductAndQuantityChanged;
+            }
+        }
+
+        #endregion
+
+        #region ICommandy OwnerClickControl
+        private ICommand _goToMagazClickOwner = null;
+        public ICommand GoToMagazClickOwner
+        {
+            get
+            {
+                if (_goToMagazClickOwner == null)
+                {
+                    _goToMagazClickOwner = new RelayCommand(LO.GoToMagazineClick, arg => true);
+                }
+                return _goToMagazClickOwner;
+            }
+        }
+        private ICommand _goToAddItemClickOwner = null;
+        public ICommand GoToAddItemClickOwner
+        {
+            get
+            {
+                if (_goToAddItemClickOwner == null)
+                {
+                    _goToAddItemClickOwner = new RelayCommand(LO.GoToAddItemClick, arg => true);
+                }
+                return _goToAddItemClickOwner;
+            }
+        }
+        private ICommand _goToListCLickOwner = null;
+        public ICommand GoToListClickOwner
+        {
+            get
+            {
+                if (_goToListCLickOwner == null)
+                {
+                    _goToListCLickOwner = new RelayCommand(LO.GoToListClick, arg => true);
+                }
+                return _goToListCLickOwner;
+            }
+        }
+        private ICommand _goToDelItemCLickOwner = null;
+        public ICommand GoToDelItemClickOwner
+        {
+            get
+            {
+                if (_goToDelItemCLickOwner == null)
+                {
+                    _goToDelItemCLickOwner = new RelayCommand(LO.GoToDelItemClick, arg => true);
+                }
+                return _goToDelItemCLickOwner;
+            }
+        }
+        private ICommand _goToDelShopCLickOwner = null;
+        public ICommand GoToDelShopClickOwner
+        {
+            get
+            {
+                if (_goToDelShopCLickOwner == null)
+                {
+                    _goToDelShopCLickOwner = new RelayCommand(LO.GoToDelShopClick, arg => true);
+                }
+                return _goToDelShopCLickOwner;
+            }
+        }
+        private ICommand _goToAddShopCLickOwner = null;
+        public ICommand GoToAddShopClickOwner
+        {
+            get
+            {
+                if (_goToAddShopCLickOwner == null)
+                {
+                    _goToAddShopCLickOwner = new RelayCommand(LO.GoToAddShopClick, arg => true);
+                }
+                return _goToAddShopCLickOwner;
+            }
+        }
+        #endregion
+
+        #region ICommandy UserClickControl
+        private ICommand _goToEditClickUser = null;
+        public ICommand GoToEditClickUser
+        {
+            get
+            {
+                if (_goToEditClickUser == null)
+                {
+                    _goToEditClickUser = new RelayCommand(LU.GoToEditClick, arg => true);
+                }
+                return _goToEditClickUser;
+            }
+        }
+        private ICommand _goToListClickUser = null;
+        public ICommand GoToListClickUser
+        {
+            get
+            {
+                if (_goToListClickUser == null)
+                {
+                    _goToListClickUser = new RelayCommand(LU.GoToList, arg => true);
+                }
+                return _goToListClickUser;
+            }
+        }
+        private ICommand _goToShoppingClickUser = null;
+        public ICommand GoToShoppingClickUser
+        {
+            get
+            {
+                if (_goToShoppingClickUser == null)
+                {
+                    _goToShoppingClickUser = new RelayCommand(LU.GoToShopping, arg => true);
+                }
+                return _goToShoppingClickUser;
+            }
+        }
+        #endregion
+
+        #region ICommandy ListOwnerControl
+        private ICommand _loadOrdersOfUser = null;
+        public ICommand LoadOrdersOfUser
+        {
+            get
+            {
+                if (_loadOrdersOfUser == null)
+                {
+                    _loadOrdersOfUser = new RelayCommand(LO.LoadOrdersOfUser, arg => true);
+                }
+                return _loadOrdersOfUser;
+            }
+        }
+        private ICommand _loadOrderDetails = null;
+        public ICommand LoadOrderDetails
+        {
+            get
+            {
+                if (_loadOrderDetails == null)
+                {
+                    _loadOrderDetails = new RelayCommand(LO.LoadOrderDetails, arg => true);
+                }
+                return _loadOrderDetails;
+            }
+        }
+        #endregion 
+
+        #region ICommandy AddItemOwnerControl
+        private ICommand _addItemClickOwner = null;
+        public ICommand AddItemClickOwner
+        {
+            get
+            {
+                if (_addItemClickOwner == null)
+                {
+                    _addItemClickOwner = new RelayCommand(LO.AddItemClick, arg => true);
+                }
+                return _addItemClickOwner;
+            }
+        }
+        #endregion
+
+        #region ICommandy DelItemOwnerControl
+
+        #endregion
+
+        #region ICommandy AddShopOwnerControl
+
+        #endregion
+
+        #region ICommandy DelShopOwnerControl
+
         #endregion
     }
 

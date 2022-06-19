@@ -20,10 +20,9 @@ namespace MVVMplusDazy.Databases.Encje
 			Quantity = int.Parse(reader["ilosc"].ToString());
 
 		}
-
 		public string ToInsert()
 		{
-			return $"('{Id_S}', {Id_P},'{Quantity}')";
+			return $"({Id_P}, '{Id_S}', '{Quantity}')";
 		}
 	}
 }

@@ -29,6 +29,15 @@ namespace MVVMplusDazy.View
         public static readonly DependencyProperty AddClProperty = DependencyProperty.Register(
             "AddCl", typeof(ICommand), typeof(AddToMagazineControl), new FrameworkPropertyMetadata(null)
             );
+        public static readonly DependencyProperty GoToListClProperty = DependencyProperty.Register(
+            "GoToListCl", typeof(ICommand), typeof(AddToMagazineControl), new FrameworkPropertyMetadata(null)
+            );
+        public static readonly DependencyProperty GoToAddClProperty = DependencyProperty.Register(
+            "GoToAddCl", typeof(ICommand), typeof(AddToMagazineControl), new FrameworkPropertyMetadata(null)
+            );
+        public static readonly DependencyProperty GoToDelClProperty = DependencyProperty.Register(
+            "GoToDelCl", typeof(ICommand), typeof(AddToMagazineControl), new FrameworkPropertyMetadata(null)
+            );
         public static readonly DependencyProperty ShopsProperty = DependencyProperty.Register(
             "Shops", typeof(ObservableCollection<Shop>), typeof(AddToMagazineControl), new FrameworkPropertyMetadata(null)
             );
@@ -54,6 +63,21 @@ namespace MVVMplusDazy.View
         {
             get { return (ICommand)GetValue(AddClProperty); }
             set { SetValue(AddClProperty, value); }
+        }
+        public ICommand GoToListCl
+        {
+            get { return (ICommand)GetValue(GoToListClProperty); }
+            set { SetValue(GoToListClProperty, value); }
+        }
+        public ICommand GoToAddCl
+        {
+            get { return (ICommand)GetValue(GoToAddClProperty); }
+            set { SetValue(GoToAddClProperty, value); }
+        }
+        public ICommand GoToDelCl
+        {
+            get { return (ICommand)GetValue(GoToDelClProperty); }
+            set { SetValue(GoToDelClProperty, value); }
         }
         public ObservableCollection<Shop> Shops
         {
@@ -98,6 +122,43 @@ namespace MVVMplusDazy.View
         void RaiseAddClick(object sender, SelectionChangedEventArgs e)
         {
             RoutedEventArgs args = new RoutedEventArgs(AddClickEvent);
+            RaiseEvent(args);
+        }
+        public static readonly RoutedEvent GoToListClickEvent =
+            EventManager.RegisterRoutedEvent("OtherGoToListClick", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(AddToMagazineControl));
+        public event RoutedEventHandler GoToListClick
+        {
+            add { AddHandler(GoToListClickEvent, value); }
+            remove { RemoveHandler(GoToListClickEvent, value); }
+        }
+        void RaiseGoToListClick(object sender, SelectionChangedEventArgs e)
+        {
+            RoutedEventArgs args = new RoutedEventArgs(GoToListClickEvent);
+            RaiseEvent(args);
+        }
+
+        public static readonly RoutedEvent GoToAddClickEvent =
+            EventManager.RegisterRoutedEvent("OtherGoToAddClick", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(AddToMagazineControl));
+        public event RoutedEventHandler GoToAddClick
+        {
+            add { AddHandler(GoToAddClickEvent, value); }
+            remove { RemoveHandler(GoToAddClickEvent, value); }
+        }
+        void RaiseGoToAddClick(object sender, SelectionChangedEventArgs e)
+        {
+            RoutedEventArgs args = new RoutedEventArgs(GoToAddClickEvent);
+            RaiseEvent(args);
+        }
+        public static readonly RoutedEvent GoToDelClickEvent =
+            EventManager.RegisterRoutedEvent("OtherGoToDelClick", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(AddToMagazineControl));
+        public event RoutedEventHandler GoToDelClick
+        {
+            add { AddHandler(GoToDelClickEvent, value); }
+            remove { RemoveHandler(GoToDelClickEvent, value); }
+        }
+        void RaiseGoToDelClick(object sender, SelectionChangedEventArgs e)
+        {
+            RoutedEventArgs args = new RoutedEventArgs(GoToDelClickEvent);
             RaiseEvent(args);
         }
         #endregion

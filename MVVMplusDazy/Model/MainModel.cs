@@ -9,6 +9,7 @@ namespace MVVMplusDazy.Model
     using Databases.Encje;
     using Databases.Repozytoria;
     using System.Collections.ObjectModel;
+    using System.Windows;
 
     class MainModel
     {
@@ -49,6 +50,15 @@ namespace MVVMplusDazy.Model
             }
             return null;
         }
+        public User OddajUseraPoLoginie(string login)
+        {
+            foreach (var usr in ListOfUsers)
+            {
+                if (usr.Login == login)
+                    return usr;
+            }
+            return null;
+        }
         public User OddajUseraPoLoginHaslo(string login, string haslo)
         {
             foreach(var usr in ListOfUsers)
@@ -80,21 +90,22 @@ namespace MVVMplusDazy.Model
             }
             return false;
         }
-        //public bool EdytujUseraWBazie(User user)
-        //{
-        //    if(RepoUser.EdytujKlientaWBazie(user.Id, user.Login, user.Password, user.MailAddress, user.PhoneNumber))
-        //    {
-        //        for(int i = 0; i< ListOfUsers.Count; i++)
-        //        {
-        //            if (ListOfUsers[i].Id == user.Id)
-        //            {
-        //                user.Id = user.Id;
-        //                ListOfUsers[i] = new User(user);
-        //            }
-        //        }
-        //    }
-        //    return false;
-        //}
+        public bool EdytujUseraWBazie(User user, int? id)
+        {
+            if (RepoUser.EdytujKlientaWBazie(user, id))
+            {
+                for(int i = 0; i < ListOfUsers.Count; i ++)
+                {
+                    if(ListOfUsers[i].Id == id)
+                    {
+                        user.Id = id;
+                        ListOfUsers[i] = new User(user);
+                    }
+                }
+                return true;
+            }
+            return false;
+        }
         #endregion
 
         #region MetodyShop
@@ -121,15 +132,64 @@ namespace MVVMplusDazy.Model
             }
             return null;
         }
-        //Czy jest taki produkt
+        public ObservableCollection<Product> OddajProduktyWiecejNizZero()
+        {
+            ObservableCollection<Product> products = new ObservableCollection<Product>();
+            foreach(Product pr in ListOfProducts)
+            {
+                bool isIn = false;
+                foreach(IsProduct ip in ListOfIsProduct)
+                {
+                    if(pr.Id == ip.Id_P && ip.Quantity > 0)
+                    {
+                        products.Add(pr);
+                        isIn = true;
+                    }
+                    if (isIn) break;
+                }
+            }
+            return products;
+        }
         //dodaj produkt do bazy
-
+        public bool CzyJestTakiProdukt(Product product)
+        {
+            foreach(Product pr in ListOfProducts)
+            {
+                if (pr.Name == product.Name) return true;
+            }
+            return false;
+        }
+        public bool DodajProduktDoBazy(Product product)
+        {
+            if(!CzyJestTakiProdukt(product))
+            {
+                if(RepoProduct.DodajProduktDoBazy(product))
+                {
+                    ListOfProducts.Add(product);
+                }
+            }
+            return false;
+        }
         #endregion
 
         #region MetodyIsProduct
-        public ObservableCollection<IsProduct> OddajIsProductZKomenda(string command)
+        public ObservableCollection<IsProduct> OddajIsProductPoIdProduktu(int? idP)
         {
-            return new ObservableCollection<IsProduct>(RepoIsProduct.PobierzWszystkieProduktySklepuZKomenda(command));
+            ObservableCollection<IsProduct> isProducts = new ObservableCollection<IsProduct>();
+            foreach(IsProduct ip in ListOfIsProduct)
+            {
+                if(ip.Id_P == idP) isProducts.Add(ip);
+            }
+            return isProducts;
+        }
+        public ObservableCollection<IsProduct> OddajIsProductPoIdSklepu(int? idS)
+        {
+            ObservableCollection<IsProduct> isProducts = new ObservableCollection<IsProduct>();
+            foreach (IsProduct ip in ListOfIsProduct)
+            {
+                if (ip.Id_S == idS) isProducts.Add(ip);
+            }
+            return isProducts;
         }
         public bool ZmniejszQuantityIsProduct(int quantity, int idP, int idS)
         {
@@ -161,6 +221,14 @@ namespace MVVMplusDazy.Model
             }
             return false;
         }
+        public bool PodlaczProduktPodSklepy(Product product)
+        {
+            foreach(Shop sh in ListOfShops)
+            {
+
+            }
+            return false;
+        }
         #endregion
 
         #region MetodyShopping
@@ -178,16 +246,39 @@ namespace MVVMplusDazy.Model
             }
             return false;
         }
-        public ObservableCollection<Shopping> OddajZakupyKlienta(int id)
+        public ObservableCollection<Shopping> OddajZakupyKlienta(int? id)
         {
-            //ObservableCollection<Shopping> res = new ObservableCollection<Shopping>();
-            //foreach(var item in ListOfShopping)
-            //{
-            //    if (item.Id_K == id)
-            //        res.Add(item);
-            //}
-            //return res;
-            return new ObservableCollection<Shopping>(RepoShopping.PobierzZakupyKlienta(id));
+            ObservableCollection<Shopping> res = new ObservableCollection<Shopping>();
+            foreach (var item in ListOfShopping)
+            {
+                if (item.Id_K == id)
+                    res.Add(item);
+            }
+            return res;
+        }
+        public ObservableCollection<Shopping> OddajUnikalneZakupyKlienta(int? id)
+        {
+            ObservableCollection<Shopping> res = new ObservableCollection<Shopping>();
+            List<int> listOfIdT = new List<int>();
+            foreach(Shopping sh in ListOfShopping)
+            {
+                if (sh.Id_K != id) continue;
+                if (listOfIdT.Contains(sh.Id_T))
+                    continue;
+                listOfIdT.Add(sh.Id_T);
+                res.Add(sh);
+            }
+            return res;
+        }
+        public ObservableCollection<Shopping> OddajZakupyPoIdTransakcji(int? id, int? userId)
+        {
+            ObservableCollection<Shopping> res = new ObservableCollection<Shopping>();
+            foreach(Shopping sh in ListOfShopping)
+            {
+                if (sh.Id_T == id && sh.Id_K == userId)
+                    res.Add(sh);
+            }
+            return res;
         }
         #endregion
     }
