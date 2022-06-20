@@ -71,5 +71,32 @@
                 
             </local:OwnerAddItemControl>
         </Grid>
+        <Grid Grid.Column="1" Margin="0,45,0,0" Visibility="{Binding DelItemVisible, Mode=TwoWay}">
+            <local:OwnerDelItemControl DelEnable="{Binding DelEnable, Mode=TwoWay}" DelItemCl="{Binding MVM.DelItemClick}"
+                                       RestockEnable="{Binding RestockEnable, Mode=TwoWay}" RestockCl="{Binding MVM.RestockItemClick}"
+                                       ListOfProductsToDel="{Binding ItemsToDel, Mode=TwoWay}" SelectedProductToDel="{Binding SelectedItemToDel, Mode=TwoWay}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectedItemToDelChanged">
+                        <i:InvokeCommandAction Command="{Binding MVM.ItemToDelChanged}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </local:OwnerDelItemControl>
+        </Grid>
+        <Grid Grid.Column="1" Margin="0,45,0,0" Visibility="{Binding AddShopVisible, Mode=TwoWay}">
+            <local:OwnerAddShopControl City="{Binding CityToAdd, Mode=TwoWay}" CityAddress="{Binding CityAddressToAdd, Mode=TwoWay}"
+                                       CanAdd="{Binding CanAddShop, Mode=TwoWay}" AddCl="{Binding MVM.AddShopClick}">
+                
+            </local:OwnerAddShopControl>
+        </Grid>
+        <Grid Grid.Column="1" Margin="0,45,0,0" Visibility="{Binding DelShopVisible, Mode=TwoWay}">
+            <local:OwnerDelShopControl ListOfShopsToDel="{Binding ListShopsToDel, Mode=TwoWay}" SelectedShopToDel="{Binding SelectedShopToDel, Mode=TwoWay}"
+                                       DelShopCl="{Binding MVM.DelShopClick}" DelEnable="{Binding CanDelShop, Mode=TwoWay}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="DelShopClick">
+                        <i:InvokeCommandAction Command="{Binding MVM.DelShopChanged}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </local:OwnerDelShopControl>
+        </Grid>
     </Grid>
 </Window>

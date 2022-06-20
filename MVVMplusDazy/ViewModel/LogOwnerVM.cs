@@ -54,6 +54,19 @@ namespace MVVMplusDazy.ViewModel
         private string _addCountryFrom = string.Empty;
         private string _addType = string.Empty;
         private string _canAddItem = "True";
+
+        private ObservableCollection<string> _itemsToDel = new ObservableCollection<string>();
+        private string _selectedItemToDel = string.Empty;
+        private string _delEnable = "True";
+        private string _restockEnable = "False";
+
+        private string _cityToAdd = string.Empty;
+        private string _cityAddressToAdd = string.Empty;
+        private string _canAddShop = "True";
+
+        private ObservableCollection<string> _listShopsToDel = new ObservableCollection<string>();
+        private string _selectedShopToDel = string.Empty;
+        private string _canDelShop = "True";
         #endregion
 
         #region GetSet
@@ -67,7 +80,7 @@ namespace MVVMplusDazy.ViewModel
         public Shop SelectedShop { get { return _selectedShop; } set { _selectedShop = value; OnPropertyChanged(nameof(SelectedShop)); } }
         public User USR { get; set; } = new User();
         public int ActualShopId { get; set; }
-        public int ActualProductId { get; set; }
+        public int? ActualProductId { get; set; }
         public string CanAdd { get { return _canAdd; } set { _canAdd = value; OnPropertyChanged(nameof(CanAdd)); } }
         public ObservableCollection<string> ListOfNamesAndQuantities { get { return _listOfNamesAndQuantities; } set { _listOfNamesAndQuantities = value; OnPropertyChanged(nameof(ListOfNamesAndQuantities)); } }
         public string SelecNameAndQua { get { return _selecNameAndQua; } set { _selecNameAndQua = value; OnPropertyChanged(nameof(SelecNameAndQua)); } }
@@ -95,6 +108,19 @@ namespace MVVMplusDazy.ViewModel
         public string AddCountryFrom { get { return _addCountryFrom; } set { _addCountryFrom = value; OnPropertyChanged(nameof(AddCountryFrom)); } }
         public string AddType { get { return _addType; } set { _addType = value; OnPropertyChanged(nameof(AddType)); } }
         public string CanAddItem { get { return _canAddItem; } set { _canAddItem = value; OnPropertyChanged(nameof(CanAddItem)); } }
+
+        public ObservableCollection<string> ItemsToDel { get { return _itemsToDel; } set { _itemsToDel = value; OnPropertyChanged(nameof(ItemsToDel)); } }
+        public string SelectedItemToDel { get { return _selectedItemToDel; } set { _selectedItemToDel = value; OnPropertyChanged(nameof(SelectedItemToDel)); } }
+        public string DelEnable { get { return _delEnable; } set { _delEnable = value; OnPropertyChanged(nameof(DelEnable)); } }
+        public string RestockEnable { get { return _restockEnable; } set { _restockEnable = value; OnPropertyChanged(nameof(RestockEnable)); } }
+
+        public string CityToAdd { get { return _cityToAdd; } set { _cityToAdd = value; OnPropertyChanged(nameof(CityToAdd)); } }
+        public string CityAddressToAdd { get { return _cityAddressToAdd; } set { _cityAddressToAdd = value; OnPropertyChanged(nameof(CityAddressToAdd)); } }
+        public string CanAddShop { get { return _canAddShop; } set { _canAddShop = value; OnPropertyChanged(nameof(CanAddShop)); } }
+
+        public ObservableCollection<string> ListShopsToDel { get { return _listShopsToDel; } set { _listShopsToDel = value; OnPropertyChanged(nameof(ListShopsToDel)); } }
+        public string SelectedShopToDel { get { return _selectedShopToDel; } set { _selectedShopToDel = value; OnPropertyChanged(nameof(SelectedShopToDel)); } }
+        public string CanDelShop { get { return _canDelShop; } set { _canDelShop = value; OnPropertyChanged(nameof(CanDelShop)); } }
         #endregion
 
         #region VMy i Windows
@@ -103,7 +129,6 @@ namespace MVVMplusDazy.ViewModel
         public StartWindowVM SWVM { get; set; }
         public MainModel MM { get; set; } = new MainModel();
         #endregion
-
 
         public LogOwnerVM() 
         {
@@ -186,34 +211,39 @@ namespace MVVMplusDazy.ViewModel
         }
         public void GoToDelItemClick(object sender)
         {
-            return;
             ListVisible = "Hidden";
             MagazineVisible = "Hidden";
             AddItemVisible = "Hidden";
             DelItemVisible = "Visible";
             AddShopVisible = "Hidden";
             DelShopVisible = "Hidden";
-        }
-        public void GoToDelShopClick(object sender)
-        {
-            return;
-            ListVisible = "Hidden";
-            MagazineVisible = "Hidden";
-            AddItemVisible = "Hidden";
-            DelItemVisible = "Hidden";
-            AddShopVisible = "Hidden";
-            DelShopVisible = "Visible";
+            LoadItemsToDel(true);
+            DelEnable = "False";
+            RestockEnable = "False";
         }
         public void GoToAddShopClick(object sender)
         {
-            return;
             ListVisible = "Hidden";
             MagazineVisible = "Hidden";
             AddItemVisible = "Hidden";
             DelItemVisible = "Hidden";
             AddShopVisible = "Visible";
             DelShopVisible = "Hidden";
+            CanAddShop = "True";
         }
+        public void GoToDelShopClick(object sender)
+        {
+            ListVisible = "Hidden";
+            MagazineVisible = "Hidden";
+            AddItemVisible = "Hidden";
+            DelItemVisible = "Hidden";
+            AddShopVisible = "Hidden";
+            DelShopVisible = "Visible";
+            LoadShopsToDel(true);
+            SelectedShopToDel = null;
+            CanDelShop = "True";
+        }
+        
         #endregion
 
         #region Metody OknaUzupelniania
@@ -227,6 +257,8 @@ namespace MVVMplusDazy.ViewModel
         {
             if (SelectedShop == null) return;
             ListOfNamesAndQuantities.Clear();
+            ListOfProducts = MM.ListOfProducts;
+            
             ObservableCollection<IsProduct> temp = MM.OddajIsProductPoIdSklepu(SelectedShop.Id);
             int i = 0;
             foreach (IsProduct ip in temp)
@@ -244,7 +276,10 @@ namespace MVVMplusDazy.ViewModel
             }               
             if (Convert.ToInt32(Quantity) <= 0) return;
             if (SelecNameAndQua == null) return;
-            ActualProductId = ListOfNamesAndQuantities.IndexOf(SelecNameAndQua) + 1;
+            
+            //ActualProductId = ListOfNamesAndQuantities.IndexOf(SelecNameAndQua) + 1;
+            string tempProd = SelecNameAndQua.Split(',')[0];
+            ActualProductId = MM.OddajProduktPoNazwie(tempProd).Id;
             ActualShopId = SelectedShop.Id;
             
             if(MM.ZwiekszQuantityIsProduct(Convert.ToInt32(Quantity), ActualProductId, ActualShopId)) ;
@@ -324,12 +359,20 @@ namespace MVVMplusDazy.ViewModel
         #region Metody OknaDodawaniaItem
         public void AddItemClick(object sender)
         {
+            
             if (!CheckAddData()) return;
-
-
-            CanAddItem = "False";
+            //AddPrice = AddPrice.Replace(',', '.');
+            double temp = Convert.ToDouble(AddPrice);
+            Product pr = new Product(temp, AddCountryFrom, AddNameOf, AddType);
+            if(MM.DodajProduktDoBazy(pr))
+            {
+                MM.PodlaczProduktPodSklepy(pr);
+                MessageBox.Show("Pomyslnie dodano produkt");
+                ClearAddData();
+                CanAddItem = "False";
+            }
+            ClearAddData();
         }
-
         public void ClearAddData()
         {
             AddNameOf = String.Empty; AddPrice = String.Empty; AddCountryFrom = string.Empty; AddType = String.Empty;
@@ -341,23 +384,94 @@ namespace MVVMplusDazy.ViewModel
             if (AddNameOf.Length > 40) return false;
             if (AddCountryFrom.Length > 40) return false;
             if (AddType.Length > 40) return false;
-            if(Convert.ToInt32(AddPrice) <= 0 ) { MessageBox.Show("Cena musi byc dodatnia"); return false; }
+            if (!double.TryParse(AddPrice, NumberStyles.Any, CultureInfo.InvariantCulture,out double value)) return false;
+            if (Convert.ToDouble(AddPrice) <= 0 ) { MessageBox.Show("Cena musi byc dodatnia"); return false; }
             return true;
         }
         #endregion
 
         #region Metody OknaUsuwaniaItem
-
+        public void LoadItemsToDel(object sender)
+        {
+            ItemsToDel.Clear();
+            foreach(Product pr in MM.ListOfProducts)
+            {
+                ItemsToDel.Add(pr.Name);
+            }
+        }
+        public void DelItemClick(object sender)
+        {
+            MessageBox.Show("DelItemClick");
+            //pobierz wszystkie itemy z alive = true
+            //if itemow z true == 1 to return, zeby nie zostalo w sklepie nic
+        }
+        public void RestockItemClick(object sender)
+        {
+            MessageBox.Show("Restock");
+        }
+        public void ItemToDelChanged(object sender)
+        {
+            if (SelectedItemToDel == null) return;
+            //MessageBox.Show("Test");
+            if (ItemsToDel.IndexOf(SelectedItemToDel) % 2 == 1)
+            {
+                DelEnable = "False";
+                RestockEnable = "True";
+                return;
+            }
+            DelEnable = "True";
+            RestockEnable = "False";
+            //jesli item ma alive = true -> delclick active
+            //jesli item ma alive = false -> restockclick active
+        }
         #endregion
 
         #region Metody OknaDodawaniaSklep
-
+        public void AddShopClick(object sender)
+        {
+            if (!CheckShopData()) return;
+            Shop sh = new Shop(CityToAdd, CityAddressToAdd);
+            if(MM.DodajSklepDoBazy(sh))
+            {
+                MM.PodlaczSklepPodProdukty(sh);
+                ClearShopData();
+                CanAddShop = "False";
+            }
+            CanAddShop = "False";
+            ClearShopData();
+        }
+        public void ClearShopData()
+        {
+            CityAddressToAdd = String.Empty; CityToAdd = String.Empty;
+        }
+        public bool CheckShopData()
+        {
+            CityToAdd = CityToAdd.Trim(); CityAddressToAdd = CityAddressToAdd.Trim();
+            if (CityToAdd == "" | CityAddressToAdd == "") return false;
+            return true;
+        }
         #endregion
 
         #region Metody OknaUsuwaniaShop
-
-        #endregion
-
-        
+        public void LoadShopsToDel(object sender)
+        {
+            ListShopsToDel.Clear();
+            foreach(Shop sh in MM.ListOfShops)
+            {
+                ListShopsToDel.Add($"{sh.City}, {sh.Address}");
+            }
+        }
+        public void DelShopClickOwner(object sender)
+        {
+            if (SelectedShopToDel == null) return;
+            if (MM.ListOfShops.Count == 1) return;
+            MessageBox.Show("DelShop");
+            CanDelShop = "False";
+        }
+        public void DelShopChanged(object sender)
+        {
+            CanDelShop = "True";
+        }
+        #endregion  
     }
 }

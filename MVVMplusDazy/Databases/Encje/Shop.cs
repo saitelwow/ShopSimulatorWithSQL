@@ -20,6 +20,8 @@ namespace MVVMplusDazy.Databases.Encje
             Address = reader["adres"].ToString();
             City = reader["miasto"].ToString();
         }
+        public Shop(string city, string address) { Address = address; City = city; }
+        public Shop() { }
         public override string ToString()
         {
             return $"{City}, {Address}";

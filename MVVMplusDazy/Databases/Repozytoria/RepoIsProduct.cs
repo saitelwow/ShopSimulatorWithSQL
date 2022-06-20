@@ -10,10 +10,7 @@ namespace MVVMplusDazy.Databases.Repozytoria
 {
     class RepoIsProduct
     {
-        // tutaj jest opcja edytowania, dodawania oraz usuwanie czy jest produkt, aby to było połączonej
-
-        //Zapytania
-        private const string DODAJ_PRODUKT = "INSERT INTO 'czy_jest_produkt'('id_sklepu', 'id_produktu', 'ilosc') VALUES ";
+        private const string DODAJ_PRODUKT = "INSERT INTO czy_jest_produkt(`id_produktu`, `id_sklepu`, `ilosc`) VALUES ";
         private const string WSZYSTKIE_PRODUKTYSKLEPU = "SELECT * FROM czy_jest_produkt";
 
 
@@ -81,7 +78,7 @@ namespace MVVMplusDazy.Databases.Repozytoria
         }
 
         //Update
-        public static bool EdytujProduktWBazieAsortyment(int quantity, int idP, int idS)
+        public static bool EdytujProduktWBazieAsortyment(int quantity, int? idP, int? idS)
         {
             bool stan = false;
             using (var connection = DBConnection.Instance.Connection)
@@ -97,7 +94,7 @@ namespace MVVMplusDazy.Databases.Repozytoria
             }
             return stan;
         }
-        public static bool EdytujProduktWBazieKupowanie(int quantity, int idP, int idS)
+        public static bool EdytujProduktWBazieKupowanie(int quantity, int? idP, int? idS)
         {
             bool stan = false;
             using (var connection = DBConnection.Instance.Connection)
@@ -131,11 +128,5 @@ namespace MVVMplusDazy.Databases.Repozytoria
             return stan;
         }
         #endregion
-
-
-        // edytowanie produktów tutaj będzie zmienna ilość i w programie za tym będzie szła funkcja z Repozytorium ile i w jakim sklepie
-        //przy edytowaniu ilości zmieniasz ilość w klasie a później tutaj wysyłasz obiekt tej klasy
-
-
     }
 }

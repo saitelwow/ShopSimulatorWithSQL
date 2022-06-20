@@ -77,7 +77,7 @@ namespace MVVMplusDazy.View
 
         #region EventyClicki
         public static readonly RoutedEvent AddClickEvent =
-            EventManager.RegisterRoutedEvent("OtherAddClick", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(OwnerAddItemControl));
+            EventManager.RegisterRoutedEvent("OtherAddItemClick", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(OwnerAddItemControl));
         public event RoutedEventHandler AddClick
         {
             add { AddHandler(AddClickEvent, value); }

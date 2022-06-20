@@ -20,9 +20,10 @@ namespace MVVMplusDazy.Databases.Repozytoria
         public static bool DodajProduktDoBazy(Product product)
         {
             bool stan = false;
+            string str = product.Price.ToString().Replace(',', '.');
             using (var connection = DBConnection.Instance.Connection)
             {
-                MySqlCommand command = new MySqlCommand($"{DODAJ_PRODUKT} {product.ToInsert()}", connection);
+                MySqlCommand command = new MySqlCommand($"{DODAJ_PRODUKT} ('{str}', '{product.CountryFrom}', '{product.Name}', '{product.Type}')", connection);
                 connection.Open();
                 var id = command.ExecuteNonQuery();
                 stan = true;

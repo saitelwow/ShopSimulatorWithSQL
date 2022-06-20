@@ -119,7 +119,23 @@ namespace MVVMplusDazy.Model
             return null;
         }
         //Czy jest taki sklep
-        //Dodaj sklep do bazy
+        public bool CzyJestTakiSklepAdres(Shop shop)
+        {
+            foreach(Shop sh in ListOfShops)
+            {
+                if (sh.Address == shop.Address) return true;
+            }
+            return false;
+        }
+        public bool DodajSklepDoBazy(Shop shop)
+        {
+            if (CzyJestTakiSklepAdres(shop)) return false;
+            if(RepoShop.DodajSklepDoBazy(shop))
+            {
+                ListOfShops.Add(shop); return true;
+            }
+            return false;
+        }
         #endregion
 
         #region MetodyProduct
@@ -150,7 +166,15 @@ namespace MVVMplusDazy.Model
             }
             return products;
         }
-        //dodaj produkt do bazy
+        public Product OddajProduktPoNazwie(string name)
+        {
+            foreach(Product pr in ListOfProducts)
+            {
+                if (pr.Name == name)
+                    return pr;
+            }
+            return null;
+        }
         public bool CzyJestTakiProdukt(Product product)
         {
             foreach(Product pr in ListOfProducts)
@@ -161,12 +185,11 @@ namespace MVVMplusDazy.Model
         }
         public bool DodajProduktDoBazy(Product product)
         {
-            if(!CzyJestTakiProdukt(product))
+            if (CzyJestTakiProdukt(product)) return false;
+            if(RepoProduct.DodajProduktDoBazy(product))
             {
-                if(RepoProduct.DodajProduktDoBazy(product))
-                {
-                    ListOfProducts.Add(product);
-                }
+                ListOfProducts.Add(product);
+                return true;
             }
             return false;
         }
@@ -191,7 +214,7 @@ namespace MVVMplusDazy.Model
             }
             return isProducts;
         }
-        public bool ZmniejszQuantityIsProduct(int quantity, int idP, int idS)
+        public bool ZmniejszQuantityIsProduct(int quantity, int? idP, int? idS)
         {
             if(RepoIsProduct.EdytujProduktWBazieKupowanie(quantity, idP, idS))
             {
@@ -206,7 +229,7 @@ namespace MVVMplusDazy.Model
             }
             return false;
         }
-        public bool ZwiekszQuantityIsProduct(int quantity, int idP, int idS)
+        public bool ZwiekszQuantityIsProduct(int quantity, int? idP, int? idS)
         {
             if (RepoIsProduct.EdytujProduktWBazieAsortyment(quantity, idP, idS))
             {
@@ -225,9 +248,27 @@ namespace MVVMplusDazy.Model
         {
             foreach(Shop sh in ListOfShops)
             {
-
+                IsProduct ip = new IsProduct(sh.Id, product.Id, 0);
+                if(!RepoIsProduct.DodajProduktDoBazy(ip))
+                {
+                    return false;
+                }
+                ListOfIsProduct.Add(ip);
             }
-            return false;
+            return true;
+        }
+        public bool PodlaczSklepPodProdukty(Shop shop)
+        {
+            foreach(Product pr in ListOfProducts)
+            {
+                IsProduct ip = new IsProduct(shop.Id, pr.Id, 0);
+                if(!RepoIsProduct.DodajProduktDoBazy(ip))
+                {
+                    return false;
+                }
+                ListOfIsProduct.Add(ip);
+            }
+            return true;
         }
         #endregion
 

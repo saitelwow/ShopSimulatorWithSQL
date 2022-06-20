@@ -11,7 +11,7 @@ namespace MVVMplusDazy.Databases.Repozytoria
     static class RepoShop
     {
         private const string WSZYSTKIE_SKLEPY = "SELECT * FROM sklep";
-
+        private const string DODAJ_SKLEP = "INSERT INTO sklep(`adres`, `miasto`) VALUES ";
         public static List<Shop> PobierzWszystkieSklepy()
         {
             List<Shop> shop = new List<Shop>();
@@ -26,6 +26,19 @@ namespace MVVMplusDazy.Databases.Repozytoria
             }
             return shop;
         }
-
+        public static bool DodajSklepDoBazy(Shop shop)
+        {
+            bool stan = false;
+            using (var connection = DBConnection.Instance.Connection)
+            {
+                MySqlCommand command = new MySqlCommand($"{DODAJ_SKLEP} ('{shop.Address}', '{shop.City}')", connection);
+                connection.Open();
+                var id = command.ExecuteNonQuery();
+                stan = true;
+                shop.Id = (int)command.LastInsertedId;
+                connection.Close();
+            }
+            return stan;
+        }
     }
 }

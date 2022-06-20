@@ -38,7 +38,6 @@ namespace MVVMplusDazy.ViewModel
         public MainModel MM { get; set; } = new MainModel();
         #endregion
 
-
         public MainVM()
         {
             RW.SWVM = SW;
@@ -473,15 +472,84 @@ namespace MVVMplusDazy.ViewModel
         #endregion
 
         #region ICommandy DelItemOwnerControl
-
+        private ICommand _itemToDelChanged = null;
+        public ICommand ItemToDelChanged
+        {
+            get
+            {
+                if (_itemToDelChanged == null)
+                {
+                    _itemToDelChanged = new RelayCommand(LO.ItemToDelChanged, arg => true);
+                }
+                return _itemToDelChanged;
+            }
+        }
+        private ICommand _delItemClick = null;
+        public ICommand DelItemClick
+        {
+            get
+            {
+                if (_delItemClick == null)
+                {
+                    _delItemClick = new RelayCommand(LO.DelItemClick, arg => true);
+                }
+                return _delItemClick;
+            }
+        }
+        private ICommand _restockItemClick = null;
+        public ICommand RestockItemClick
+        {
+            get
+            {
+                if (_restockItemClick == null)
+                {
+                    _restockItemClick = new RelayCommand(LO.RestockItemClick, arg => true);
+                }
+                return _restockItemClick;
+            }
+        }
         #endregion
 
         #region ICommandy AddShopOwnerControl
-
+        private ICommand _addShopClick = null;
+        public ICommand AddShopClick
+        {
+            get
+            {
+                if (_addShopClick == null)
+                {
+                    _addShopClick = new RelayCommand(LO.AddShopClick, arg => true);
+                }
+                return _addShopClick;
+            }
+        }
         #endregion
 
         #region ICommandy DelShopOwnerControl
-
+        private ICommand _delShopClick = null;
+        public ICommand DelShopClick
+        {
+            get
+            {
+                if (_delShopClick == null)
+                {
+                    _delShopClick = new RelayCommand(LO.DelShopClickOwner, arg => true);
+                }
+                return _delShopClick;
+            }
+        }
+        private ICommand _delShopChanged = null;
+        public ICommand DelShopChanged
+        {
+            get
+            {
+                if (_delShopChanged == null)
+                {
+                    _delShopChanged = new RelayCommand(LO.DelShopChanged, arg => true); ;
+                }
+                return _delShopChanged;
+            }
+        }
         #endregion
     }
 
