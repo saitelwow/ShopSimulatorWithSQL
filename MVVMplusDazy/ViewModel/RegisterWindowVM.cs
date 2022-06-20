@@ -65,15 +65,15 @@ namespace MVVMplusDazy.ViewModel
             IsVisible = "Hidden";
         }
         public void Register(object sender)
-        {
+        {    
             User user = new User(Login, Password, PhoneNumber, MailAddress);
-            if (!CheckData(user, RepeatedPassword)) 
-                 return;             
-            CanRegister = "False";
-            if(MM.DodajUseraDoBazy(user))
+            if (!CheckData(user, RepeatedPassword))
+                return;
+            if (MM.DodajUseraDoBazy(user))
             {
                 ClearAll();
                 MessageBox.Show("User dodany");
+                CanRegister = "False";
                 return;
             }
             ClearAll();

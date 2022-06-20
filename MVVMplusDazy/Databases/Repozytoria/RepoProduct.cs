@@ -32,7 +32,6 @@ namespace MVVMplusDazy.Databases.Repozytoria
             }
             return stan;
         }
-
         //Read
         public static List<Product> PobierzWszystkieProdukty()
         {
@@ -48,25 +47,7 @@ namespace MVVMplusDazy.Databases.Repozytoria
             }
             return product;
         }
-
         //Update
-        //public static bool EdytujProduktWBazie(Product product, string name)
-        //{
-        //    bool stan = false;
-        //    using (var connection = DBConnection.Instance.Connection)
-        //    {
-        //        string EDYTUJ_Produkt = $"UPDATE produkty SET ilosc='{product.Quantity}' WHERE nazwa={name}";
-
-        //        MySqlCommand command = new MySqlCommand(EDYTUJ_Produkt, connection);
-        //        connection.Open();
-        //        var n = command.ExecuteNonQuery();
-        //        if (n == 1) stan = true;
-
-        //        connection.Close();
-        //    }
-        //    return stan;
-        //}
-
         //Delete
         public static bool UsunProduktWBazie(Product product, string name)
         {

@@ -276,17 +276,13 @@ namespace MVVMplusDazy.ViewModel
             }               
             if (Convert.ToInt32(Quantity) <= 0) return;
             if (SelecNameAndQua == null) return;
-            
-            //ActualProductId = ListOfNamesAndQuantities.IndexOf(SelecNameAndQua) + 1;
             string tempProd = SelecNameAndQua.Split(',')[0];
             ActualProductId = MM.OddajProduktPoNazwie(tempProd).Id;
             ActualShopId = SelectedShop.Id;
-            
             if(MM.ZwiekszQuantityIsProduct(Convert.ToInt32(Quantity), ActualProductId, ActualShopId)) ;
             {
                 MessageBox.Show("Udalo sie");
             }
-
             Quantity = string.Empty;
             CanAdd = "False";
             Load();
@@ -359,9 +355,7 @@ namespace MVVMplusDazy.ViewModel
         #region Metody OknaDodawaniaItem
         public void AddItemClick(object sender)
         {
-            
             if (!CheckAddData()) return;
-            //AddPrice = AddPrice.Replace(',', '.');
             double temp = Convert.ToDouble(AddPrice);
             Product pr = new Product(temp, AddCountryFrom, AddNameOf, AddType);
             if(MM.DodajProduktDoBazy(pr))
@@ -370,6 +364,7 @@ namespace MVVMplusDazy.ViewModel
                 MessageBox.Show("Pomyslnie dodano produkt");
                 ClearAddData();
                 CanAddItem = "False";
+                return;
             }
             ClearAddData();
         }

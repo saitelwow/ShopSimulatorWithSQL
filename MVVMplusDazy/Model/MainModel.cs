@@ -73,8 +73,6 @@ namespace MVVMplusDazy.Model
             foreach(User usr in ListOfUsers)
             {
                 if (user.Login == usr.Login) return true;
-                if (user.PhoneNumber == usr.PhoneNumber) return true;
-                if (user.MailAddress == usr.MailAddress) return true;
             }
             return false;
         }

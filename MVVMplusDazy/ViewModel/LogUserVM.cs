@@ -323,13 +323,8 @@ namespace MVVMplusDazy.ViewModel
         #region MetodyEdycji
         public void EditClick(object sender)
         {
-            //MessageBox.Show("EditClick");
             User user = new User(ActUSR.Login, EditPassword, EditPhoneNumber, EditMailAddress);
-            if(!RWVM.CheckData(user, EditRepeatedPassword))
-            {
-                MessageBox.Show($"{ActUSR.Login}, {EditPassword}, {EditRepeatedPassword},{EditPhoneNumber}, {EditMailAddress}");
-                return;
-            }
+            if (!RWVM.CheckData(user, EditRepeatedPassword)) return;
             if(MM.EdytujUseraWBazie(user, ActUSR.Id))
             {
                 EditClearAll();
@@ -338,7 +333,6 @@ namespace MVVMplusDazy.ViewModel
                 ActualLogin = ActUSR.Login;
                 ActualPhone = ActUSR.PhoneNumber;
                 ActualMail = ActUSR.MailAddress;
-                //US.DataContext = this;
                 return;
             }
             EditClearAll();
